@@ -215,10 +215,19 @@ Distribute the whole `dist\LVT` folder (the `_internal` folder is required). The
 | `collect_licenses.py`, `licenses/`, `THIRD_PARTY_NOTICES.txt` | Third-party licence notices |
 | `tools/` | Developer utilities (diagnostics, A/V sync measurement, seek check, tests). Not part of the released exe. |
 | `examples/` | Examples |
->
-![1](LVT_1.jpg)
+
 ## License and disclaimer
 
 **License:** MIT (see [`LICENSE`](LICENSE)). Third-party notices: [`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt).
 
 The program is provided "AS IS", without warranty of any kind. Use it only with recordings you have the right to use. Always keep a backup of important recordings.
+
+>
+![1](LVT_1.jpg)
+![2](LVT_2.jpg)
+![3](LVT_3.jpg)
+![4](LVT_4.jpg)
+![5](LVT_5.jpg)
+![6](LVT_6.jpg)
+![7](LVT_7.jpg)
+
