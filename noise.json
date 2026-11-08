@@ -1,0 +1,1063 @@
+{
+ "filters": [
+  {
+   "ns": "dfttest",
+   "fn": "DFTTest",
+   "cat": "noise",
+   "label": [
+    "Zajszűrő (DFTTest)",
+    "Denoiser (DFTTest)"
+   ],
+   "help": [
+    "Frekvenciatartományú, térbeli-időbeli zajszűrő. Jó általános választás; a sigma az erősség.",
+    "Frequency-domain spatio-temporal denoiser. A good all-round choice; sigma is the strength."
+   ],
+   "params": [
+    {
+     "name": "sigma",
+     "type": "float",
+     "default": 8.0,
+     "label": [
+      "Erősség (sigma)",
+      "Strength (sigma)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 50,
+     "step": 0.5,
+     "help": [
+      "Nagyobb = erősebb zajszűrés, de simább kép.",
+      "Higher = stronger denoising, smoother image."
+     ]
+    },
+    {
+     "name": "tbsize",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Időbeli ablak",
+      "Temporal size"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 15,
+     "step": 1,
+     "help": [
+      "Hány képkockát vesz figyelembe (1 = csak térbeli).",
+      "Number of frames considered (1 = spatial only)."
+     ]
+    },
+    {
+     "name": "sbsize",
+     "type": "int",
+     "default": 16,
+     "label": [
+      "Térbeli blokk",
+      "Spatial block size"
+     ],
+     "basic": false,
+     "min": 1,
+     "max": 64,
+     "step": 1
+    },
+    {
+     "name": "sosize",
+     "type": "int",
+     "default": 12,
+     "label": [
+      "Blokk-átfedés",
+      "Block overlap"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 63,
+     "step": 1
+    },
+    {
+     "name": "planes",
+     "type": "expr",
+     "default": "[0, 1, 2]",
+     "label": [
+      "Síkok",
+      "Planes"
+     ],
+     "basic": false,
+     "help": [
+      "Mely síkokra hat: [0] = csak fény (Y), [0, 1, 2] = mind.",
+      "Planes to process: [0] = luma only, [0, 1, 2] = all."
+     ]
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "sigma": 4.0
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "sigma": 8.0
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "sigma": 16.0
+     }
+    }
+   ]
+  },
+  {
+   "ns": "knlm",
+   "fn": "KNLMeansCL",
+   "cat": "noise",
+   "label": [
+    "Zajszűrő (KNLMeansCL, GPU)",
+    "Denoiser (KNLMeansCL, GPU)"
+   ],
+   "help": [
+    "Non-local means zajszűrő videokártyán (OpenCL). Kíméli a részleteket; a h az erősség.",
+    "Non-local means denoiser on the GPU (OpenCL). Preserves detail; h is the strength."
+   ],
+   "params": [
+    {
+     "name": "h",
+     "type": "float",
+     "default": 1.2,
+     "label": [
+      "Erősség (h)",
+      "Strength (h)"
+     ],
+     "basic": true,
+     "min": 0.1,
+     "max": 10,
+     "step": 0.1
+    },
+    {
+     "name": "d",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Időbeli sugár",
+      "Temporal radius"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 8,
+     "step": 1,
+     "help": [
+      "0 = csak térbeli. Nagyobb érték lassabb.",
+      "0 = spatial only. Higher is slower."
+     ]
+    },
+    {
+     "name": "a",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Keresési sugár",
+      "Search radius"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "s",
+     "type": "int",
+     "default": 4,
+     "label": [
+      "Hasonlósági ablak",
+      "Similarity window"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "channels",
+     "type": "str",
+     "default": "auto",
+     "label": [
+      "Csatornák",
+      "Channels"
+     ],
+     "basic": true,
+     "choices": [
+      "auto",
+      "Y",
+      "UV",
+      "YUV",
+      "RGB"
+     ]
+    },
+    {
+     "name": "wmode",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Súlyozás módja",
+      "Weighting mode"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "wref",
+     "type": "float",
+     "default": 1.0,
+     "label": [
+      "Referencia-súly",
+      "Reference weight"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 5,
+     "step": 0.1
+    },
+    {
+     "name": "device_type",
+     "type": "str",
+     "default": "auto",
+     "label": [
+      "Eszköz típusa",
+      "Device type"
+     ],
+     "basic": false,
+     "choices": [
+      "auto",
+      "cpu",
+      "gpu",
+      "accelerator"
+     ]
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "h": 0.6,
+      "d": 1
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "h": 1.2,
+      "d": 1
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "h": 2.5,
+      "d": 2
+     }
+    }
+   ]
+  },
+  {
+   "ns": "nlm_ispc",
+   "fn": "NLMeans",
+   "cat": "noise",
+   "label": [
+    "Zajszűrő (NLMeans, CPU)",
+    "Denoiser (NLMeans, CPU)"
+   ],
+   "help": [
+    "Non-local means zajszűrő processzoron (ISPC). Ha nincs videokártya, ezt használd.",
+    "Non-local means denoiser on the CPU (ISPC). Use this when there is no suitable GPU."
+   ],
+   "params": [
+    {
+     "name": "h",
+     "type": "float",
+     "default": 1.2,
+     "label": [
+      "Erősség (h)",
+      "Strength (h)"
+     ],
+     "basic": true,
+     "min": 0.1,
+     "max": 10,
+     "step": 0.1
+    },
+    {
+     "name": "d",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Időbeli sugár",
+      "Temporal radius"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "a",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Keresési sugár",
+      "Search radius"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "s",
+     "type": "int",
+     "default": 4,
+     "label": [
+      "Hasonlósági ablak",
+      "Similarity window"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "channels",
+     "type": "str",
+     "default": "auto",
+     "label": [
+      "Csatornák",
+      "Channels"
+     ],
+     "basic": false,
+     "choices": [
+      "auto",
+      "Y",
+      "UV",
+      "YUV",
+      "RGB"
+     ]
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "h": 0.6
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "h": 1.2
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "h": 2.5
+     }
+    }
+   ]
+  },
+  {
+   "ns": "fft3dfilter",
+   "fn": "FFT3DFilter",
+   "cat": "noise",
+   "label": [
+    "Zajszűrő (FFT3DFilter)",
+    "Denoiser (FFT3DFilter)"
+   ],
+   "help": [
+    "Klasszikus 3D frekvenciatartományú zajszűrő, élesítéssel kombinálható.",
+    "Classic 3D frequency-domain denoiser; can also sharpen."
+   ],
+   "params": [
+    {
+     "name": "sigma",
+     "type": "float",
+     "default": 2.0,
+     "label": [
+      "Erősség (sigma)",
+      "Strength (sigma)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 30,
+     "step": 0.25
+    },
+    {
+     "name": "bt",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Időbeli mód (bt)",
+      "Temporal mode (bt)"
+     ],
+     "basic": true,
+     "choices": [
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ],
+     "help": [
+      "-1 = Sharpen, 0 = kernel, 1 = csak térbeli, 2-5 = időbeli ablak.",
+      "-1 = sharpen, 0 = kernel, 1 = spatial only, 2-5 = temporal window."
+     ]
+    },
+    {
+     "name": "sharpen",
+     "type": "float",
+     "default": 0.0,
+     "label": [
+      "Élesítés",
+      "Sharpen"
+     ],
+     "basic": true,
+     "min": -2,
+     "max": 2,
+     "step": 0.1
+    },
+    {
+     "name": "beta",
+     "type": "float",
+     "default": 1.0,
+     "label": [
+      "Zaj-megtartás (beta)",
+      "Noise retention (beta)"
+     ],
+     "basic": false,
+     "min": 1,
+     "max": 10,
+     "step": 0.1
+    },
+    {
+     "name": "bw",
+     "type": "int",
+     "default": 32,
+     "label": [
+      "Blokk szélesség",
+      "Block width"
+     ],
+     "basic": false,
+     "min": 8,
+     "max": 128,
+     "step": 2
+    },
+    {
+     "name": "bh",
+     "type": "int",
+     "default": 32,
+     "label": [
+      "Blokk magasság",
+      "Block height"
+     ],
+     "basic": false,
+     "min": 8,
+     "max": 128,
+     "step": 2
+    },
+    {
+     "name": "planes",
+     "type": "expr",
+     "default": "[0, 1, 2]",
+     "label": [
+      "Síkok",
+      "Planes"
+     ],
+     "basic": false,
+     "help": [
+      "Mely síkokra hat: [0] = csak fény (Y), [0, 1, 2] = mind.",
+      "Planes to process: [0] = luma only, [0, 1, 2] = all."
+     ]
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "sigma": 1.0
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "sigma": 2.0
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "sigma": 4.0
+     }
+    }
+   ]
+  },
+  {
+   "ns": "neo_fft3d",
+   "fn": "FFT3D",
+   "cat": "noise",
+   "label": [
+    "Zajszűrő (neo FFT3D)",
+    "Denoiser (neo FFT3D)"
+   ],
+   "help": [
+    "Az FFT3DFilter gyorsabb, modern változata.",
+    "A faster, modern version of FFT3DFilter."
+   ],
+   "params": [
+    {
+     "name": "sigma",
+     "type": "float",
+     "default": 2.0,
+     "label": [
+      "Erősség (sigma)",
+      "Strength (sigma)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 30,
+     "step": 0.25
+    },
+    {
+     "name": "bt",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Időbeli mód (bt)",
+      "Temporal mode (bt)"
+     ],
+     "basic": true,
+     "choices": [
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "sharpen",
+     "type": "float",
+     "default": 0.0,
+     "label": [
+      "Élesítés",
+      "Sharpen"
+     ],
+     "basic": true,
+     "min": -2,
+     "max": 2,
+     "step": 0.1
+    },
+    {
+     "name": "beta",
+     "type": "float",
+     "default": 1.0,
+     "label": [
+      "Zaj-megtartás (beta)",
+      "Noise retention (beta)"
+     ],
+     "basic": false,
+     "min": 1,
+     "max": 10,
+     "step": 0.1
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "sigma": 1.0
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "sigma": 2.0
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "sigma": 4.0
+     }
+    }
+   ]
+  },
+  {
+   "ns": "rgvs",
+   "fn": "RemoveGrain",
+   "cat": "noise",
+   "label": [
+    "RemoveGrain (finom simítás)",
+    "RemoveGrain (light smoothing)"
+   ],
+   "help": [
+    "Gyors, egyszerű pixel-szomszédság alapú simítás. A mód határozza meg a viselkedést.",
+    "Fast, simple neighbourhood-based smoothing. The mode selects the behaviour."
+   ],
+   "params": [
+    {
+     "name": "mode",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mód",
+      "Mode"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 28,
+     "step": 1,
+     "help": [
+      "1 = legfinomabb (szomszédok min/max közé szorít), nagyobb számok erősebbek vagy más jellegűek.",
+      "1 = gentlest (clips to neighbour min/max); other modes differ in character."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "ttmpsm",
+   "fn": "TTempSmooth",
+   "cat": "noise",
+   "label": [
+    "Időbeli simítás (TTempSmooth)",
+    "Temporal smoother (TTempSmooth)"
+   ],
+   "help": [
+    "Időbeli zajszűrő: a képkockák közötti kis eltéréseket simítja el, a mozgást megtartja.",
+    "Temporal denoiser: smooths small frame-to-frame differences while keeping motion."
+   ],
+   "params": [
+    {
+     "name": "maxr",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Időbeli sugár",
+      "Temporal radius"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 7,
+     "step": 1,
+     "help": [
+      "Hány képkockával előre/hátra néz.",
+      "Frames looked at forwards/backwards."
+     ]
+    },
+    {
+     "name": "ythresh",
+     "type": "int",
+     "default": 4,
+     "label": [
+      "Fény-küszöb",
+      "Luma threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "uthresh",
+     "type": "int",
+     "default": 5,
+     "label": [
+      "U-küszöb",
+      "U threshold"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "vthresh",
+     "type": "int",
+     "default": 5,
+     "label": [
+      "V-küszöb",
+      "V threshold"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "strength",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Erősség",
+      "Strength"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "scthresh",
+     "type": "float",
+     "default": 12.0,
+     "label": [
+      "Jelenetváltás-küszöb",
+      "Scene change threshold"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 100,
+     "step": 0.5
+    },
+    {
+     "name": "fp",
+     "type": "bool",
+     "default": true,
+     "label": [
+      "Előszűrés",
+      "Pre-filter"
+     ],
+     "basic": false
+    }
+   ]
+  },
+  {
+   "ns": "bilateral",
+   "fn": "Bilateral",
+   "cat": "noise",
+   "label": [
+    "Bilaterális szűrő",
+    "Bilateral filter"
+   ],
+   "help": [
+    "Éltartó simítás: a sima felületeket simítja, az éleket megtartja.",
+    "Edge-preserving smoothing: smooths flat areas, keeps edges."
+   ],
+   "params": [
+    {
+     "name": "sigmaS",
+     "type": "float",
+     "default": 3.0,
+     "label": [
+      "Térbeli sigma",
+      "Spatial sigma"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 30,
+     "step": 0.5
+    },
+    {
+     "name": "sigmaR",
+     "type": "float",
+     "default": 0.02,
+     "label": [
+      "Színtartomány-sigma",
+      "Range sigma"
+     ],
+     "basic": true,
+     "min": 0.001,
+     "max": 1,
+     "step": 0.01,
+     "help": [
+      "Kisebb = az élek jobban megmaradnak.",
+      "Smaller = edges are kept better."
+     ]
+    },
+    {
+     "name": "planes",
+     "type": "expr",
+     "default": "[0, 1, 2]",
+     "label": [
+      "Síkok",
+      "Planes"
+     ],
+     "basic": false,
+     "help": [
+      "Mely síkokra hat: [0] = csak fény (Y), [0, 1, 2] = mind.",
+      "Planes to process: [0] = luma only, [0, 1, 2] = all."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "f3kdb",
+   "fn": "Deband",
+   "cat": "noise",
+   "label": [
+    "Sávosodás-eltávolítás (f3kdb)",
+    "Debanding (f3kdb)"
+   ],
+   "help": [
+    "Megszünteti a színátmenetek lépcsőzését (banding); a szemcsézés elfedi a maradékot.",
+    "Removes banding in gradients; added grain hides the remainder."
+   ],
+   "params": [
+    {
+     "name": "range",
+     "type": "int",
+     "default": 15,
+     "label": [
+      "Sugár",
+      "Range"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 31,
+     "step": 1,
+     "help": [
+      "Mekkora környezetben keres.",
+      "Size of the area searched."
+     ]
+    },
+    {
+     "name": "y",
+     "type": "int",
+     "default": 64,
+     "label": [
+      "Fény-küszöb (y)",
+      "Luma threshold (y)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "cb",
+     "type": "int",
+     "default": 64,
+     "label": [
+      "Kék-küszöb (cb)",
+      "Cb threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "cr",
+     "type": "int",
+     "default": 64,
+     "label": [
+      "Piros-küszöb (cr)",
+      "Cr threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "grainy",
+     "type": "int",
+     "default": 64,
+     "label": [
+      "Fény-szemcse",
+      "Luma grain"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "grainc",
+     "type": "int",
+     "default": 64,
+     "label": [
+      "Szín-szemcse",
+      "Chroma grain"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "sample_mode",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Mintavétel módja",
+      "Sample mode"
+     ],
+     "basic": false,
+     "choices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    {
+     "name": "dynamic_grain",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Mozgó szemcse",
+      "Dynamic grain"
+     ],
+     "basic": true
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "y": 32,
+      "cb": 32,
+      "cr": 32,
+      "grainy": 16,
+      "grainc": 0
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "y": 48,
+      "cb": 48,
+      "cr": 48,
+      "grainy": 24,
+      "grainc": 8
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "y": 64,
+      "cb": 64,
+      "cr": 64,
+      "grainy": 48,
+      "grainc": 24
+     }
+    }
+   ]
+  },
+  {
+   "ns": "msmoosh",
+   "fn": "MSmooth",
+   "cat": "noise",
+   "label": [
+    "Éltartó simítás (MSmooth)",
+    "Edge-masked smoothing (MSmooth)"
+   ],
+   "help": [
+    "Az éleket kikerülve simít (maszk alapján).",
+    "Smooths while avoiding edges (mask-based)."
+   ],
+   "params": [
+    {
+     "name": "threshold",
+     "type": "float",
+     "default": 6.0,
+     "label": [
+      "Küszöb",
+      "Threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 0.5
+    },
+    {
+     "name": "strength",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Erősség",
+      "Strength"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 25,
+     "step": 1
+    },
+    {
+     "name": "mask",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Maszk megjelenítése",
+      "Show mask"
+     ],
+     "basic": true
+    }
+   ]
+  }
+ ]
+}

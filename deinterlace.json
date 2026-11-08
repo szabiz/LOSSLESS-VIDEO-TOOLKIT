@@ -1,0 +1,564 @@
+{
+ "filters": [
+  {
+   "ns": "znedi3",
+   "fn": "nnedi3",
+   "cat": "field",
+   "label": [
+    "Deinterlace (znedi3)",
+    "Deinterlace (znedi3)"
+   ],
+   "help": [
+    "Neurális hálós deinterlace / kétszeres átméretezés.",
+    "Neural-network deinterlacer / 2x resizer."
+   ],
+   "params": [
+    {
+     "name": "field",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mezőrend",
+      "Field order"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "help": [
+      "0 = alsó mező elöl, azonos fps; 1 = felső mező elöl, azonos fps; 2 = alsó elöl, dupla fps; 3 = felső elöl, dupla fps.",
+      "0 = BFF same rate; 1 = TFF same rate; 2 = BFF double rate; 3 = TFF double rate."
+     ]
+    },
+    {
+     "name": "dh",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Dupla magasság",
+      "Double height"
+     ],
+     "basic": true,
+     "help": [
+      "Bekapcsolva a kép magasságát megduplázza (átméretezéshez), nem deinterlace.",
+      "When on, doubles the height (for resizing) instead of deinterlacing."
+     ]
+    },
+    {
+     "name": "nsize",
+     "type": "int",
+     "default": 6,
+     "label": [
+      "Szomszédság-méret",
+      "Neighbourhood size"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    {
+     "name": "nns",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Neuronok",
+      "Neurons"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "help": [
+      "Nagyobb = jobb, de lassabb.",
+      "Higher = better but slower."
+     ]
+    },
+    {
+     "name": "qual",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Minőség",
+      "Quality"
+     ],
+     "basic": true,
+     "choices": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "etype",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Hiba-típus",
+      "Error type"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "nnedi3",
+   "fn": "nnedi3",
+   "cat": "field",
+   "label": [
+    "Deinterlace (nnedi3)",
+    "Deinterlace (nnedi3)"
+   ],
+   "help": [
+    "Neurális hálós deinterlace / kétszeres átméretezés.",
+    "Neural-network deinterlacer / 2x resizer."
+   ],
+   "params": [
+    {
+     "name": "field",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mezőrend",
+      "Field order"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "help": [
+      "0 = alsó mező elöl, azonos fps; 1 = felső mező elöl, azonos fps; 2 = alsó elöl, dupla fps; 3 = felső elöl, dupla fps.",
+      "0 = BFF same rate; 1 = TFF same rate; 2 = BFF double rate; 3 = TFF double rate."
+     ]
+    },
+    {
+     "name": "dh",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Dupla magasság",
+      "Double height"
+     ],
+     "basic": true,
+     "help": [
+      "Bekapcsolva a kép magasságát megduplázza (átméretezéshez), nem deinterlace.",
+      "When on, doubles the height (for resizing) instead of deinterlacing."
+     ]
+    },
+    {
+     "name": "nsize",
+     "type": "int",
+     "default": 6,
+     "label": [
+      "Szomszédság-méret",
+      "Neighbourhood size"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    {
+     "name": "nns",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Neuronok",
+      "Neurons"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "help": [
+      "Nagyobb = jobb, de lassabb.",
+      "Higher = better but slower."
+     ]
+    },
+    {
+     "name": "qual",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Minőség",
+      "Quality"
+     ],
+     "basic": true,
+     "choices": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "etype",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Hiba-típus",
+      "Error type"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "nnedi3cl",
+   "fn": "NNEDI3CL",
+   "cat": "field",
+   "label": [
+    "Deinterlace (nnedi3cl, GPU)",
+    "Deinterlace (nnedi3cl, GPU)"
+   ],
+   "help": [
+    "Neurális hálós deinterlace / kétszeres átméretezés.",
+    "Neural-network deinterlacer / 2x resizer."
+   ],
+   "params": [
+    {
+     "name": "field",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mezőrend",
+      "Field order"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "help": [
+      "0 = alsó mező elöl, azonos fps; 1 = felső mező elöl, azonos fps; 2 = alsó elöl, dupla fps; 3 = felső elöl, dupla fps.",
+      "0 = BFF same rate; 1 = TFF same rate; 2 = BFF double rate; 3 = TFF double rate."
+     ]
+    },
+    {
+     "name": "dh",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Dupla magasság",
+      "Double height"
+     ],
+     "basic": true,
+     "help": [
+      "Bekapcsolva a kép magasságát megduplázza (átméretezéshez), nem deinterlace.",
+      "When on, doubles the height (for resizing) instead of deinterlacing."
+     ]
+    },
+    {
+     "name": "nsize",
+     "type": "int",
+     "default": 6,
+     "label": [
+      "Szomszédság-méret",
+      "Neighbourhood size"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ]
+    },
+    {
+     "name": "nns",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Neuronok",
+      "Neurons"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "help": [
+      "Nagyobb = jobb, de lassabb.",
+      "Higher = better but slower."
+     ]
+    },
+    {
+     "name": "qual",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Minőség",
+      "Quality"
+     ],
+     "basic": true,
+     "choices": [
+      1,
+      2
+     ]
+    },
+    {
+     "name": "etype",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Hiba-típus",
+      "Error type"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "bwdif",
+   "fn": "Bwdif",
+   "cat": "field",
+   "label": [
+    "Deinterlace (Bwdif)",
+    "Deinterlace (Bwdif)"
+   ],
+   "help": [
+    "Gyors, jó minőségű mozgás-adaptív deinterlace.",
+    "Fast, good-quality motion-adaptive deinterlacer."
+   ],
+   "params": [
+    {
+     "name": "field",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mezőrend",
+      "Field order"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "help": [
+      "0 = alsó mező elöl, azonos fps; 1 = felső mező elöl, azonos fps; 2 = alsó elöl, dupla fps; 3 = felső elöl, dupla fps.",
+      "0 = BFF same rate; 1 = TFF same rate; 2 = BFF double rate; 3 = TFF double rate."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "vivtc",
+   "fn": "VFM",
+   "cat": "field",
+   "label": [
+    "Mezőpárosítás (VFM, IVTC 1. lépés)",
+    "Field matching (VFM, IVTC step 1)"
+   ],
+   "help": [
+    "Telecine-es (23,976 → 29,97) anyag mezőit párosítja vissza; utána jön a VDecimate.",
+    "Re-pairs fields of telecined film (23.976 → 29.97); VDecimate follows."
+   ],
+   "params": [
+    {
+     "name": "order",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Mezősorrend",
+      "Field order"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1
+     ],
+     "help": [
+      "0 = alsó mező elöl, 1 = felső mező elöl.",
+      "0 = bottom field first, 1 = top field first."
+     ]
+    },
+    {
+     "name": "mode",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Párosítási mód",
+      "Match mode"
+     ],
+     "basic": true,
+     "choices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    },
+    {
+     "name": "cthresh",
+     "type": "int",
+     "default": 9,
+     "label": [
+      "Fésűs-küszöb",
+      "Combing threshold"
+     ],
+     "basic": true,
+     "min": -1,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "field",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Alap-mező",
+      "Base field"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "name": "mi",
+     "type": "int",
+     "default": 80,
+     "label": [
+      "Fésűs-pixelszám (mi)",
+      "Combed pixel count (mi)"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 500,
+     "step": 1
+    },
+    {
+     "name": "scthresh",
+     "type": "float",
+     "default": 12.0,
+     "label": [
+      "Jelenetváltás-küszöb",
+      "Scene change threshold"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 100,
+     "step": 0.5
+    }
+   ]
+  },
+  {
+   "ns": "vivtc",
+   "fn": "VDecimate",
+   "cat": "field",
+   "label": [
+    "Ismétlődő kocka törlése (VDecimate)",
+    "Duplicate-frame removal (VDecimate)"
+   ],
+   "help": [
+    "A VFM után a 29,97 fps-ből kidobja az ismétlődő képkockát (5-ből 1), így lesz 23,976 fps.",
+    "After VFM, drops the duplicate frame (1 in 5) to get 23.976 fps."
+   ],
+   "params": [
+    {
+     "name": "cycle",
+     "type": "int",
+     "default": 5,
+     "label": [
+      "Ciklus",
+      "Cycle"
+     ],
+     "basic": true,
+     "min": 2,
+     "max": 25,
+     "step": 1,
+     "help": [
+      "Hány képkockánként dob el egyet.",
+      "Drops one frame every this many."
+     ]
+    },
+    {
+     "name": "dupthresh",
+     "type": "float",
+     "default": 1.1,
+     "label": [
+      "Ismétlés-küszöb",
+      "Duplicate threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 10,
+     "step": 0.1
+    },
+    {
+     "name": "scthresh",
+     "type": "float",
+     "default": 15.0,
+     "label": [
+      "Jelenetváltás-küszöb",
+      "Scene change threshold"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 100,
+     "step": 0.5
+    },
+    {
+     "name": "chroma",
+     "type": "bool",
+     "default": true,
+     "label": [
+      "Színt is figyeli",
+      "Use chroma"
+     ],
+     "basic": false
+    }
+   ]
+  }
+ ]
+}

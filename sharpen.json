@@ -1,0 +1,327 @@
+{
+ "filters": [
+  {
+   "ns": "cas",
+   "fn": "CAS",
+   "cat": "line",
+   "label": [
+    "Adaptív élesítés (CAS)",
+    "Adaptive sharpen (CAS)"
+   ],
+   "help": [
+    "Kontraszt-adaptív élesítés: kevés artefaktummal élesít.",
+    "Contrast-adaptive sharpening: sharpens with few artifacts."
+   ],
+   "params": [
+    {
+     "name": "sharpness",
+     "type": "float",
+     "default": 0.5,
+     "label": [
+      "Élesség",
+      "Sharpness"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "name": "planes",
+     "type": "expr",
+     "default": "[0, 1, 2]",
+     "label": [
+      "Síkok",
+      "Planes"
+     ],
+     "basic": false,
+     "help": [
+      "Mely síkokra hat: [0] = csak fény (Y), [0, 1, 2] = mind.",
+      "Planes to process: [0] = luma only, [0, 1, 2] = all."
+     ]
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "sharpness": 0.3
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "sharpness": 0.5
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "sharpness": 0.8
+     }
+    }
+   ]
+  },
+  {
+   "ns": "warp",
+   "fn": "AWarpSharp2",
+   "cat": "line",
+   "label": [
+    "Vonal-vékonyítás (AWarpSharp2)",
+    "Line thinning (AWarpSharp2)"
+   ],
+   "help": [
+    "Az éleket összehúzza (vékonyabb, élesebb vonalak) – főleg rajzfilmhez.",
+    "Warps edges inward (thinner, crisper lines) – mostly for animation."
+   ],
+   "params": [
+    {
+     "name": "thresh",
+     "type": "int",
+     "default": 128,
+     "label": [
+      "Küszöb",
+      "Threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "blur",
+     "type": "int",
+     "default": 2,
+     "label": [
+      "Elmosás",
+      "Blur"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 8,
+     "step": 1
+    },
+    {
+     "name": "depth",
+     "type": "int",
+     "default": 3,
+     "label": [
+      "Mélység",
+      "Depth"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 32,
+     "step": 1,
+     "help": [
+      "Mennyire húzza össze az éleket.",
+      "How strongly edges are warped."
+     ]
+    },
+    {
+     "name": "type",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Típus",
+      "Type"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1
+     ]
+    },
+    {
+     "name": "chroma",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Szín is",
+      "Include chroma"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "msmoosh",
+   "fn": "MSharpen",
+   "cat": "line",
+   "label": [
+    "Élmaszkos élesítés (MSharpen)",
+    "Edge-masked sharpen (MSharpen)"
+   ],
+   "help": [
+    "Csak az éleket élesíti (maszk alapján), a sima részeket nem.",
+    "Sharpens only edges (mask-based), not flat areas."
+   ],
+   "params": [
+    {
+     "name": "threshold",
+     "type": "float",
+     "default": 6.0,
+     "label": [
+      "Küszöb",
+      "Threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 0.5
+    },
+    {
+     "name": "strength",
+     "type": "int",
+     "default": 39,
+     "label": [
+      "Erősség",
+      "Strength"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 255,
+     "step": 1
+    },
+    {
+     "name": "mask",
+     "type": "bool",
+     "default": false,
+     "label": [
+      "Maszk megjelenítése",
+      "Show mask"
+     ],
+     "basic": true
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "Gyenge",
+      "Light"
+     ],
+     "values": {
+      "strength": 20
+     }
+    },
+    {
+     "name": [
+      "Közepes",
+      "Medium"
+     ],
+     "values": {
+      "strength": 39
+     }
+    },
+    {
+     "name": [
+      "Erős",
+      "Strong"
+     ],
+     "values": {
+      "strength": 80
+     }
+    }
+   ]
+  },
+  {
+   "ns": "tcanny",
+   "fn": "TCanny",
+   "cat": "line",
+   "label": [
+    "Élkereső (TCanny)",
+    "Edge detector (TCanny)"
+   ],
+   "help": [
+    "Canny élkereső; élmaszkok készítéséhez.",
+    "Canny edge detector; for building edge masks."
+   ],
+   "params": [
+    {
+     "name": "sigma",
+     "type": "float",
+     "default": 1.5,
+     "label": [
+      "Elmosás (sigma)",
+      "Blur (sigma)"
+     ],
+     "basic": true,
+     "min": 0.1,
+     "max": 10,
+     "step": 0.1
+    },
+    {
+     "name": "t_h",
+     "type": "float",
+     "default": 8.0,
+     "label": [
+      "Felső küszöb",
+      "High threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 50,
+     "step": 0.5
+    },
+    {
+     "name": "t_l",
+     "type": "float",
+     "default": 1.0,
+     "label": [
+      "Alsó küszöb",
+      "Low threshold"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 50,
+     "step": 0.5
+    },
+    {
+     "name": "mode",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Mód",
+      "Mode"
+     ],
+     "basic": false,
+     "choices": [
+      -1,
+      0,
+      1,
+      2
+     ]
+    },
+    {
+     "name": "op",
+     "type": "int",
+     "default": 1,
+     "label": [
+      "Operátor",
+      "Operator"
+     ],
+     "basic": false,
+     "choices": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ]
+  }
+ ]
+}

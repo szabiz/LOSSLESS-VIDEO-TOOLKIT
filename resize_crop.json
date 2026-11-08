@@ -1,0 +1,612 @@
+{
+ "filters": [
+  {
+   "ns": "resize",
+   "fn": "Spline36",
+   "cat": "resize",
+   "label": [
+    "Átméretezés (Spline36)",
+    "Resize (Spline36)"
+   ],
+   "help": [
+    "Jó általános minőségű átméretezés, kevés gyűrűzéssel.",
+    "Good all-round resizer with little ringing."
+   ],
+   "params": [
+    {
+     "name": "width",
+     "type": "int",
+     "default": 1280,
+     "label": [
+      "Szélesség",
+      "Width"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "height",
+     "type": "int",
+     "default": 720,
+     "label": [
+      "Magasság",
+      "Height"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "dither_type",
+     "type": "str",
+     "default": "none",
+     "label": [
+      "Dithering",
+      "Dithering"
+     ],
+     "basic": false,
+     "choices": [
+      "none",
+      "ordered",
+      "random",
+      "error_diffusion"
+     ],
+     "help": [
+      "Csak bitmélység-váltásnál számít.",
+      "Only matters when the bit depth changes."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "resize",
+   "fn": "Lanczos",
+   "cat": "resize",
+   "label": [
+    "Átméretezés (Lanczos)",
+    "Resize (Lanczos)"
+   ],
+   "help": [
+    "Éles átméretezés; több „taps” = élesebb, de gyűrűzhet.",
+    "Sharp resizer; more taps = sharper but may ring."
+   ],
+   "params": [
+    {
+     "name": "width",
+     "type": "int",
+     "default": 1280,
+     "label": [
+      "Szélesség",
+      "Width"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "height",
+     "type": "int",
+     "default": 720,
+     "label": [
+      "Magasság",
+      "Height"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "filter_param_a",
+     "type": "float",
+     "default": 3.0,
+     "label": [
+      "Taps",
+      "Taps"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 10,
+     "step": 1
+    },
+    {
+     "name": "dither_type",
+     "type": "str",
+     "default": "none",
+     "label": [
+      "Dithering",
+      "Dithering"
+     ],
+     "basic": false,
+     "choices": [
+      "none",
+      "ordered",
+      "random",
+      "error_diffusion"
+     ],
+     "help": [
+      "Csak bitmélység-váltásnál számít.",
+      "Only matters when the bit depth changes."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "resize",
+   "fn": "Bicubic",
+   "cat": "resize",
+   "label": [
+    "Átméretezés (Bicubic)",
+    "Resize (Bicubic)"
+   ],
+   "help": [
+    "Állítható élességű átméretezés (b, c).",
+    "Resizer with adjustable sharpness (b, c)."
+   ],
+   "params": [
+    {
+     "name": "width",
+     "type": "int",
+     "default": 1280,
+     "label": [
+      "Szélesség",
+      "Width"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "height",
+     "type": "int",
+     "default": 720,
+     "label": [
+      "Magasság",
+      "Height"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "filter_param_a",
+     "type": "float",
+     "default": 0.3333,
+     "label": [
+      "b (puhaság)",
+      "b (softness)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "name": "filter_param_b",
+     "type": "float",
+     "default": 0.3333,
+     "label": [
+      "c (élesség)",
+      "c (sharpness)"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 1,
+     "step": 0.05
+    },
+    {
+     "name": "dither_type",
+     "type": "str",
+     "default": "none",
+     "label": [
+      "Dithering",
+      "Dithering"
+     ],
+     "basic": false,
+     "choices": [
+      "none",
+      "ordered",
+      "random",
+      "error_diffusion"
+     ],
+     "help": [
+      "Csak bitmélység-váltásnál számít.",
+      "Only matters when the bit depth changes."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "resize",
+   "fn": "Bilinear",
+   "cat": "resize",
+   "label": [
+    "Átméretezés (Bilinear)",
+    "Resize (Bilinear)"
+   ],
+   "help": [
+    "Egyszerű, puha átméretezés.",
+    "Simple, soft resizer."
+   ],
+   "params": [
+    {
+     "name": "width",
+     "type": "int",
+     "default": 1280,
+     "label": [
+      "Szélesség",
+      "Width"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "height",
+     "type": "int",
+     "default": 720,
+     "label": [
+      "Magasság",
+      "Height"
+     ],
+     "basic": true,
+     "min": 16,
+     "max": 8192,
+     "step": 2
+    },
+    {
+     "name": "dither_type",
+     "type": "str",
+     "default": "none",
+     "label": [
+      "Dithering",
+      "Dithering"
+     ],
+     "basic": false,
+     "choices": [
+      "none",
+      "ordered",
+      "random",
+      "error_diffusion"
+     ],
+     "help": [
+      "Csak bitmélység-váltásnál számít.",
+      "Only matters when the bit depth changes."
+     ]
+    }
+   ]
+  },
+  {
+   "ns": "std",
+   "fn": "Crop",
+   "cat": "crop",
+   "label": [
+    "Vágás (Crop)",
+    "Crop"
+   ],
+   "help": [
+    "Levágja a kép szélét. YUV420 esetén párosnak kell lennie az értékeknek.",
+    "Crops the image edges. Values must be even for YUV420."
+   ],
+   "params": [
+    {
+     "name": "left",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Bal",
+      "Left"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "right",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Jobb",
+      "Right"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "top",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Felső",
+      "Top"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "bottom",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Alsó",
+      "Bottom"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    }
+   ]
+  },
+  {
+   "ns": "std",
+   "fn": "AddBorders",
+   "cat": "crop",
+   "label": [
+    "Keret hozzáadása",
+    "Add borders"
+   ],
+   "help": [
+    "Fekete keretet ad a kép köré.",
+    "Adds black borders around the image."
+   ],
+   "params": [
+    {
+     "name": "left",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Bal",
+      "Left"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "right",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Jobb",
+      "Right"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "top",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Felső",
+      "Top"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    },
+    {
+     "name": "bottom",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Alsó",
+      "Bottom"
+     ],
+     "basic": true,
+     "min": 0,
+     "max": 4096,
+     "step": 2
+    }
+   ]
+  },
+  {
+   "ns": "std",
+   "fn": "Levels",
+   "cat": "color",
+   "label": [
+    "Szintek / gamma (Levels)",
+    "Levels / gamma"
+   ],
+   "help": [
+    "Fényerő-görbe. A számok 8 bites értékek; magasabb bitmélységnél arányosan nagyobbak.",
+    "Brightness curve. Numbers are 8-bit values; scale them up for higher bit depths."
+   ],
+   "params": [
+    {
+     "name": "gamma",
+     "type": "float",
+     "default": 1.0,
+     "label": [
+      "Gamma",
+      "Gamma"
+     ],
+     "basic": true,
+     "min": 0.1,
+     "max": 5,
+     "step": 0.05,
+     "help": [
+      "1,0 = változatlan; nagyobb = világosabb középtónusok.",
+      "1.0 = unchanged; higher = brighter midtones."
+     ]
+    },
+    {
+     "name": "planes",
+     "type": "expr",
+     "default": "[0]",
+     "label": [
+      "Síkok",
+      "Planes"
+     ],
+     "basic": true,
+     "help": [
+      "[0] = csak fény (ajánlott gammához).",
+      "[0] = luma only (recommended for gamma)."
+     ]
+    },
+    {
+     "name": "min_in",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Bemenet min",
+      "Input min"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 65535,
+     "step": 1
+    },
+    {
+     "name": "max_in",
+     "type": "int",
+     "default": 255,
+     "label": [
+      "Bemenet max",
+      "Input max"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 65535,
+     "step": 1
+    },
+    {
+     "name": "min_out",
+     "type": "int",
+     "default": 0,
+     "label": [
+      "Kimenet min",
+      "Output min"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 65535,
+     "step": 1
+    },
+    {
+     "name": "max_out",
+     "type": "int",
+     "default": 255,
+     "label": [
+      "Kimenet max",
+      "Output max"
+     ],
+     "basic": false,
+     "min": 0,
+     "max": 65535,
+     "step": 1
+    }
+   ]
+  },
+  {
+   "ns": "std",
+   "fn": "AssumeFPS",
+   "cat": "framerate",
+   "label": [
+    "Képkockaszám átírása (AssumeFPS)",
+    "Set frame rate (AssumeFPS)"
+   ],
+   "help": [
+    "Csak a lejátszási sebességet írja át (a képkockák számát nem), tehát a videó gyorsabb/lassabb lesz.",
+    "Only relabels the playback rate (not the number of frames), so the video plays faster/slower."
+   ],
+   "params": [
+    {
+     "name": "fpsnum",
+     "type": "int",
+     "default": 24000,
+     "label": [
+      "Számláló",
+      "Numerator"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 1000000,
+     "step": 1
+    },
+    {
+     "name": "fpsden",
+     "type": "int",
+     "default": 1001,
+     "label": [
+      "Nevező",
+      "Denominator"
+     ],
+     "basic": true,
+     "min": 1,
+     "max": 1000000,
+     "step": 1
+    }
+   ],
+   "presets": [
+    {
+     "name": [
+      "23,976",
+      "23.976"
+     ],
+     "values": {
+      "fpsnum": 24000,
+      "fpsden": 1001
+     }
+    },
+    {
+     "name": [
+      "25",
+      "25"
+     ],
+     "values": {
+      "fpsnum": 25,
+      "fpsden": 1
+     }
+    },
+    {
+     "name": [
+      "29,97",
+      "29.97"
+     ],
+     "values": {
+      "fpsnum": 30000,
+      "fpsden": 1001
+     }
+    },
+    {
+     "name": [
+      "50",
+      "50"
+     ],
+     "values": {
+      "fpsnum": 50,
+      "fpsden": 1
+     }
+    },
+    {
+     "name": [
+      "59,94",
+      "59.94"
+     ],
+     "values": {
+      "fpsnum": 60000,
+      "fpsden": 1001
+     }
+    }
+   ]
+  }
+ ]
+}
