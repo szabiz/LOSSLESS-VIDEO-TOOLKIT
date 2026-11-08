@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+*.bak
+*.tmp
+build/
+dist/
+# helyi naplók és diagnosztika (személyes útvonalak, fájlnevek)
+efekt_naplo.txt
+lvt_diag_report.txt
+*_naplo.txt
+# egyszeri javítószkriptek
+apply_*.py
+add_editor_segment_controls.py
+# futásidőben létrejövő jelzőfájl: NE szállítsd, különben kimarad az FFmpeg-licencfigyelmeztetés
+lvt_ffmpeg_licenc.txt
+TracsaFrigyesNagyonZajos.txt
+VAPOURSYNTH_KORNYEZET_FRISSITES.md
+update_smartcut_ui.py

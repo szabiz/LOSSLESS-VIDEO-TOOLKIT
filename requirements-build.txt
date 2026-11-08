@@ -1,0 +1,3 @@
+pyinstaller>=6.0
+# opcionális: a képeffektek előnézetéhez (HPND licenc)
+pillow

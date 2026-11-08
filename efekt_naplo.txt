@@ -1,0 +1,15 @@
+13:49:20 NYITÁS v1.6 PIL=True ffmpeg=C:\ffmpeg\bin\ffmpeg.exe segs=1
+13:49:21 KÉSZ token=1 bytes=691200
+13:49:21 KÉSZ token=2 bytes=691200
+13:49:21 KÉSZ token=3 bytes=823200
+13:49:22 KÉSZ token=4 bytes=971280
+15:33:59 NYITÁS v1.6 PIL=True ffmpeg=C:\ffmpeg\bin\ffmpeg.exe segs=1
+15:33:59 KÉSZ token=1 bytes=691200
+15:33:59 KÉSZ token=2 bytes=691200
+15:33:59 KÉSZ token=3 bytes=823200
+15:34:00 KÉSZ token=4 bytes=971280
+15:34:07 KÉSZ token=5 bytes=971280
+15:34:09 KÉSZ token=6 bytes=971280
+15:34:10 KÉSZ token=7 bytes=971280
+15:34:12 KÉSZ token=8 bytes=971280
+15:34:13 KÉSZ token=9 bytes=971280
