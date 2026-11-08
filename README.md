@@ -215,7 +215,8 @@ Distribute the whole `dist\LVT` folder (the `_internal` folder is required). The
 | `collect_licenses.py`, `licenses/`, `THIRD_PARTY_NOTICES.txt` | Third-party licence notices |
 | `tools/` | Developer utilities (diagnostics, A/V sync measurement, seek check, tests). Not part of the released exe. |
 | `examples/` | Examples |
-
+>
+![1](LVT_1.jpg)
 ## License and disclaimer
 
 **License:** MIT (see [`LICENSE`](LICENSE)). Third-party notices: [`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt).
