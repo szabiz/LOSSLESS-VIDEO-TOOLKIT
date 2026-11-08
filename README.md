@@ -224,10 +224,17 @@ The program is provided "AS IS", without warranty of any kind. Use it only with 
 
 >
 ![1](LVT_1.jpg)
+
 ![2](LVT_2.jpg)
+
 ![3](LVT_3.jpg)
+
 ![4](LVT_4.jpg)
+
 ![5](LVT_5.jpg)
+
 ![6](LVT_6.jpg)
+
 ![7](LVT_7.jpg)
+
 
