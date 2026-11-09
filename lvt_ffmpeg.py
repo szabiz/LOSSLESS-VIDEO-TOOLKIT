@@ -2444,6 +2444,7 @@ class FfmpegPanel:
         for _v in (self.o["vcodec"], self.o["acodec"]):
             try:
                 _v.trace_add("write", self._upd_codec_desc)     # profil / előbeállítás is frissíti
+                _v.trace_add("write", self._upd_codec_fields)   # copy / none: a kódolási mezők inaktívak
             except Exception:
                 pass
         o = ttk.LabelFrame(f, text=_("Kimenet", "Output"), padding=4)
@@ -3387,6 +3388,29 @@ class FfmpegPanel:
         self._upd_ext_in_out()
         self._upd_cont_hint()
         self._upd_codec_desc()
+        self._upd_codec_fields()
+
+    def _upd_codec_fields(self, *_a):
+        """Másolásnál (copy), kihagyásnál (none) vagy üres kodeknél nincs újrakódolás, ezért a hozzá tartozó mezők
+        (preset, CRF, bitráta, méret, fps, pix_fmt, hwaccel, GOP, -vf, deinterlace / csatorna, Hz, dB, -af)
+        inaktívak. A kodek-választó és a leíró sor megmarad. Csak-hang konténernél a Videó-keretet az
+        _apply_container kapcsolja ki teljesen."""
+        try:
+            audio_only = self._audio_only()
+        except Exception:
+            audio_only = False
+        for frm, keep, var, skip in (
+                (getattr(self, "frm_v", None), (getattr(self, "cb_v", None), getattr(self, "lbl_vdesc", None)),
+                 self.o["vcodec"], audio_only),
+                (getattr(self, "frm_a", None), (getattr(self, "cb_a", None), getattr(self, "lbl_adesc", None)),
+                 self.o["acodec"], False)):
+            if frm is None or skip:
+                continue
+            off = (var.get() or "").strip() in ("copy", "none", "")
+            for w in frm.winfo_children():
+                if any(w is k for k in keep):
+                    continue
+                self._set_children_state(w, not off)
 
     def _upd_ext_in_out(self):
         # a célfájl kiterjesztése a kiválasztott kiterjesztéshez igazodik
@@ -4011,7 +4035,7 @@ class FfmpegPanel:
         o = self._opts()
         out = o["out"].strip()
         if not out:
-            ext = os.path.splitext(items[0][0])[1] or ".mkv"
+            ext = self._default_ext()       # a kiválasztott kiterjesztés (nem a forrásfájlé)
             out = self.fd.asksaveasfilename(parent=self.parent, defaultextension=ext,
                                             initialfile=os.path.splitext(os.path.basename(items[0][0]))[0] + self.q_suffix + ext)
             if not out:
