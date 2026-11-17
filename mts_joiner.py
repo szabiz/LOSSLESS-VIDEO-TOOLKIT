@@ -4,7 +4,7 @@
 # SPDX-FileCopyrightText: 2026 szabiz <szabiz@yahoo.com>
 # Copyright (c) 2026 szabiz <szabiz@yahoo.com>
 """
-Lossless Video Toolkit 1.0 - veszteségmentes videó összefűző, kinyerő
+Lossless Video Toolkit 1.1 - veszteségmentes videó összefűző, kinyerő
 ===========================================================
 Az összefűző és kinyerő rész csak a Python standard könyvtárát használja (tkinter, struct, threading).
 A további modulok (vágó, FFmpeg-ablak, képeffektek, elemző) a külső FFmpeg-et és az opcionális VapourSynth-et
@@ -23,6 +23,8 @@ Nincs újrakódolás: a Transport Stream csomagokat másolja, és közben
   * MPEG Program Stream (.mpg / .mpeg) és DVD VOB fájlokat is összefűz (SCR + PTS/DTS
     eltolás, a hasznos adat bájtra azonos, a VOB NAV-csomagjai igazítva), ugyanazzal az
     ellenőrzéssel a kimeneten,
+  * hangfájlokat is összefűz (.aac ADTS, .mp3, .mp2, .ac3, .eac3, .opus / .ogg; .m4a / .m4b az MP4-úton;
+    a hangkeretek bájtra azonosak, a címkék és az MP3 Xing-keret nem kerülnek át),
   * hangsáv / képfolyam kinyerése és a hang cseréje TS / M2TS, MP4 / MOV és MKV fájlokban
     (második fül; parancssorban: streams, extract, replace-audio),
   * összefűzés előtt ellenőrzi a fájlok kompatibilitását (zöld/sárga/piros),
@@ -73,7 +75,7 @@ _U32 = struct.Struct(">I")
 
 # ------------------------------------------------- verzió / licenc / nyelv --
 
-__version__ = "1.0"
+__version__ = "1.1"
 # LVT-PATCH: icon+cutter v1
 AUTHOR = "szabiz"      # a szerzői jogi tulajdonos (Névjegy, Jogi és Licenc fül, MIT-szöveg)
 AUTHOR_EMAIL = "szabiz@yahoo.com"
@@ -120,7 +122,7 @@ SOFTWARE.
 
 _STR = {
     "hu": {
-        "title": "Lossless Video Toolkit 1.0 – veszteségmentes videó összefűző",
+        "title": "Lossless Video Toolkit 1.1 – veszteségmentes videó összefűző",
         "err_sync_k": "Szinkronvesztés a(z) %d. csomagnál (sérült fájl?)",
         "err_sync_file": "Szinkronvesztés a(z) %s fájlban",
         "err_small": "Túl kicsi fájl",
@@ -176,7 +178,7 @@ _STR = {
         "tab_comp": "Komponensek", "b_close": "Bezár",
     },
     "en": {
-        "title": "Lossless Video Toolkit 1.0 – lossless video joiner, muxer, demuxer",
+        "title": "Lossless Video Toolkit 1.1 – lossless video joiner, muxer, demuxer",
         "err_sync_k": "Sync lost at packet %d (damaged file?)",
         "err_sync_file": "Sync lost in file %s",
         "err_small": "File is too small",
@@ -210,7 +212,7 @@ _STR = {
         "l_audio": "   audio (PID 0x%X) at the seam: %+.1f ms, dropped PES: %d",
         "l_pcr": "   PCR jump at the seam (%+.1f ms) – discontinuity flag set",
         "l_done": "Done: %s",
-        "cli_desc": "Lossless Video Toolkit 1.0",
+        "cli_desc": "Lossless Video Toolkit 1.1",
         "b_add": "Add files…", "b_folder": "Add folder…",
         "b_remove": "Remove", "b_up": "▲ Up", "b_down": "▼ Down",
         "b_sort": "Sort by name", "b_clear": "Clear list",
@@ -1153,17 +1155,17 @@ _LSTR = {
             "Futtatókörnyezet (nem része a programnak, a Python telepítéssel érkezik):\n  • Python és szabványos könyvtára – Python Software Foundation License\n  • Tkinter / Tcl/Tk (grafikus felület) – Tcl/Tk License (BSD-típusú)\n\n"
             "Külső programok és könyvtárak. A program NEM tartalmazza, nem csomagolja és nem tölti le őket; a felhasználó telepíti őket, és rájuk a saját licencük vonatkozik, nem a program MIT-licence:\n  • FFmpeg, ffprobe, ffplay – a Smart Cut, az FFmpeg-ablak, a képeffektek és az elemző külső ellenőrzése használja. Csak különálló programként, parancssorból indul. A licenc a buildtől függően LGPL vagy GPL: https://ffmpeg.org/legal.html\n  • VapourSynth (vspipe), pluginjai és Python-szkriptjei (pl. havsfunc, QTGMC és függőségei) – csak akkor, ha a felhasználó bekapcsolja a VapourSynth-támogatást. A program a felhasználó által megadott mappából tölti be őket, nem másolja és nem módosítja. A pluginok licencei eltérők. A pluginok és Python-modulok vizsgálata idegen kódot futtat, ezért csak megbízható mappát vizsgálj.\n  • Pillow (PIL) – nem kötelező; ha telepítve van, a képeffektek előnézete használja (HPND licenc).\n\n"
             "Ha a programot Python nélkül, becsomagolt (pl. PyInstaller-es) formában terjeszted, a csomagba kerülő futtatókörnyezet licencszövegeit is mellékelned kell (a Python licence és a benne lévő komponensek – pl. zlib, Tcl/Tk – saját licencei; ezek a Python telepítésének LICENSE.txt fájljában találhatók). Forráskódként (.py) terjesztve erre nincs szükség. Az FFmpeg-et és a VapourSynth-et ne csomagold a programhoz, hacsak azok licencfeltételeit külön, önállóan nem teljesíted.\n\n"
-            "Nyilvános specifikációk, amelyek alapján az összefűző és kinyerő kódja készült (kód nem lett átvéve):\n  • ISO/IEC 13818-1 | ITU-T H.222.0 – MPEG-2 Transport Stream és Program Stream\n  • ISO/IEC 11172-1/-2/-3 és 13818-2 – MPEG-1/2 rendszer-, videó- és hangfejlécek\n  • DVD-Video fájlok (VOB, NAV-csomag) nyilvánosan dokumentált szerkezete\n  • ISO/IEC 14496-12 – ISO Base Media File Format (MP4/MOV)\n  • RFC 8794 (EBML), RFC 9559 (Matroska / WebM)\n  • ITU-T H.264 – az SPS (profil, felbontás) beolvasása\n  • ATSC A/52 – az AC-3 fejléc beolvasása\n\n"
+            "Nyilvános specifikációk, amelyek alapján az összefűző és kinyerő kódja készült (kód nem lett átvéve):\n  • ISO/IEC 13818-1 | ITU-T H.222.0 – MPEG-2 Transport Stream és Program Stream\n  • ISO/IEC 11172-1/-2/-3 és 13818-2 – MPEG-1/2 rendszer-, videó- és hangfejlécek\n  • DVD-Video fájlok (VOB, NAV-csomag) nyilvánosan dokumentált szerkezete\n  • ISO/IEC 14496-12 – ISO Base Media File Format (MP4/MOV)\n  • RFC 8794 (EBML), RFC 9559 (Matroska / WebM)\n  • ITU-T H.264 – az SPS (profil, felbontás) beolvasása\n  • ATSC A/52 – az AC-3 fejléc beolvasása\n  • ISO/IEC 13818-7 / 14496-3 – AAC ADTS fejléc, ISO/IEC 11172-3 – MP3 / MP2 keretfejléc\n  • RFC 3533 (Ogg), RFC 7845 (Ogg Opus), RFC 6716 (Opus)\n\n"
             "Nem használt és nem mellékelt programok: eac3to, tsMuxeR. A korábbi batch-megoldás az eac3to-ra és a tsMuxeR-re épült; ez a program önálló, ezek licencei rá nem vonatkoznak.\n\n"
             "Az összefűző és a kinyerő nem dekódol és nem kódol: az adatfolyam csomagjait változatlanul másolja. A külső FFmpeg-et használó modulok (pl. Smart Cut, FFmpeg-ablak) kódolhatnak és dekódolhatnak, de ezt maga az FFmpeg végzi, különálló programként.\n\n"
             "Idézett szöveg (nem kód): a programban egy rövid bibliai idézet szerepel a forrás megjelölésével – magyarul Károli Gáspár fordításából (közkincs), angolul a King James Version-ből (köztulajdon). Ezekre a szövegekre nem a program MIT-licence vonatkozik."
         ),
         "legal_text": (
             "JOGI TUDNIVALÓK\n\n"
-            "Szerzői jog és licenc\nAz Lossless Video Toolkit 1.0 v%s szerzői jogi tulajdonosa: %s (Copyright (c) %s %s). A program az MIT licenc alatt szabadon használható, másolható, módosítható és terjeszthető. A licenc teljes szövegét – a szerzői jogi megjegyzéssel együtt – minden másolathoz vagy lényeges részéhez mellékelni kell (lásd a Licenc fület).\n\n"
+            "Szerzői jog és licenc\nAz Lossless Video Toolkit 1.1 v%s szerzői jogi tulajdonosa: %s (Copyright (c) %s %s). A program az MIT licenc alatt szabadon használható, másolható, módosítható és terjeszthető. A licenc teljes szövegét – a szerzői jogi megjegyzéssel együtt – minden másolathoz vagy lényeges részéhez mellékelni kell (lásd a Licenc fület).\n\n"
             "Garancia és felelősség\nA program „ahogy van” (AS IS) készült, kifejezett vagy hallgatólagos garancia nélkül. A szerző nem felel a program használatából eredő kárért vagy adatvesztésért. A program úgy készült, hogy a forrásfájlokat ne módosítsa, a kimenetet pedig új fájlba írja – fontos felvételekről ettől függetlenül mindig tarts másolatot.\n\n"
             "Tartalom és jogosultság\nA programot csak olyan felvételekkel használd, amelyekhez jogod van (saját felvétel, vagy a jogtulajdonos engedélye). A program nem kerüli meg a másolásvédelmet és nem fejt vissza titkosítást: a titkosított / másolásvédett tartalmat elutasítja (pl. DRM-es MP4-sáv, titkosított MPEG-PS). A felhasználó felel azért, hogy a használata megfeleljen a hatályos jogszabályoknak és a jogtulajdonosok feltételeinek.\n\n"
-            "Szabványok és szabadalmak\nAz összefűző és a kinyerő saját kód, nyilvános műszaki specifikációk alapján készült (lásd a Komponensek fület); nem kódol és nem dekódol videót vagy hangot, csak az adatfolyam csomagjait másolja, és az időbélyegeket, számlálókat írja át. A Smart Cut, az FFmpeg-ablak, a képeffektek és az elemző külső FFmpeg-et indíthat, amely kódol és dekódol. A videó- és hangkodekekhez (pl. H.264/AVC, MPEG-2, AC-3) kapcsolódó szabadalmi és licenckérdések jellemzően a kodeket megvalósító termékek gyártóit és használóit érintik. Ha a programot kereskedelmi termék részeként terjeszted, kérj jogi tanácsot.\n\n"
+            "Szabványok és szabadalmak\nAz összefűző és a kinyerő saját kód, nyilvános műszaki specifikációk alapján készült (lásd a Komponensek fület); nem kódol és nem dekódol videót vagy hangot, csak az adatfolyam csomagjait másolja, és az időbélyegeket, számlálókat írja át. A Smart Cut, az FFmpeg-ablak, a képeffektek és az elemző külső FFmpeg-et indíthat, amely kódol és dekódol. A videó- és hangkodekekhez (pl. H.264/AVC, MPEG-2, AC-3, AAC, MP3, Opus) kapcsolódó szabadalmi és licenckérdések jellemzően a kodeket megvalósító termékek gyártóit és használóit érintik. Ha a programot kereskedelmi termék részeként terjeszted, kérj jogi tanácsot.\n\n"
             "Idézett szöveg\nA programban egy rövid bibliai idézet is szerepel a forrás megjelölésével. A magyar szöveg Károli Gáspár fordítása (közkincs), az angol a King James Version (köztulajdon). Az idézett szövegekre nem a program MIT-licence vonatkozik: jogaik a megfelelő jogtulajdonosokat illetik.\n\n"
             "Védjegyek\nAz AVCHD a Panasonic Corporation és a Sony Corporation védjegye. A programban említett egyéb terméknevek, formátumnevek és védjegyek (pl. Dolby, DVD, MPEG, Matroska, Python, FFmpeg, VapourSynth, StaxRip) a jogos tulajdonosaiké. Említésük kizárólag a kompatibilitás megjelölésére szolgál; a programnak nincs kapcsolata e tulajdonosokkal, és ők nem támogatják vagy hagyják jóvá.\n\n"
             "Adatkezelés\nA program maga nem kezdeményez hálózati kapcsolatot, és nem gyűjt, nem küld adatot. Egyetlen helyen nyit külső hivatkozást: az FFmpeg-licencablak „Licenc megnyitása a böngészőben” gombja az alapértelmezett böngészőben megnyitja az ffmpeg.org/legal.html oldalt.\nHelyben, a gépeden ezeket írja: ~/.mts_joiner.cfg (a kiválasztott nyelv kódja); ~/.lvt_ffmpeg.json (az FFmpeg-modul beállításai: az ffmpeg / ffprobe / ffplay útvonala, mentett minták); ~/.lossless_video_toolkit (ikon-gyorsítótár); ~/efekt_vs_lanc (a VapourSynth-szűrőlánc generált szkriptjei és gyorsítótára); a program mappájában az efekt_naplo.txt diagnosztikai napló (fájl- és mappaneveket, útvonalakat tartalmazhat; sehova nem küldi el), és a lvt_ffmpeg_licenc.txt jelzőfájl (az FFmpeg-figyelmeztetés elfogadását jelzi); az operációs rendszer ideiglenes mappájában lvt_ előtagú ideiglenes fájlokat, amelyeket használat után igyekszik törölni.\n\n"
@@ -1171,7 +1173,7 @@ _LSTR = {
         ),
     },
     "en": {
-        "b_help": "Help", "help_title": "Help – Lossless Video Toolkit 1.0", "tab_legal": "Legal",
+        "b_help": "Help", "help_title": "Help – Lossless Video Toolkit 1.1", "tab_legal": "Legal",
         "hl_E": "ERROR", "hl_W": "WARNING", "hl_R": "RED", "hl_Y": "YELLOW",
         "about_text": (
             "Lossless Video Toolkit v%s\n\n"
@@ -1187,7 +1189,7 @@ _LSTR = {
             "Runtime (not part of the program, supplied by the Python installation):\n  • Python and its standard library – Python Software Foundation License\n  • Tkinter / Tcl/Tk (graphical interface) – Tcl/Tk License (BSD-style)\n\n"
             "External programs and libraries. The program does NOT include, bundle or download them; the user installs them, and they are covered by their own licenses, not by this program's MIT License:\n  • FFmpeg, ffprobe, ffplay – used by Smart Cut, the FFmpeg window, the image effects and the analyzer's external check. They are only started as separate command-line programs. The license is LGPL or GPL depending on the build: https://ffmpeg.org/legal.html\n  • VapourSynth (vspipe), its plugins and Python scripts (e.g. havsfunc, QTGMC and its dependencies) – only if the user turns on VapourSynth support. The program loads them from the folder the user specifies and does not copy or modify them. Plugin licenses differ. Scanning plugins and Python modules runs third-party code, so scan only trusted folders.\n  • Pillow (PIL) – optional; if installed, the image-effects preview uses it (HPND license).\n\n"
             "If you distribute the program bundled without a separate Python (e.g. built with PyInstaller), you must also include the license texts of the bundled runtime (the Python license and the licenses of its components, e.g. zlib and Tcl/Tk – they are in the LICENSE.txt of your Python installation). Distributing the plain source (.py) does not require this. Do not bundle FFmpeg or VapourSynth with the program unless you separately fulfil their license terms.\n\n"
-            "Public specifications the joiner / extractor code was written from (no code was copied):\n  • ISO/IEC 13818-1 | ITU-T H.222.0 – MPEG-2 Transport Stream and Program Stream\n  • ISO/IEC 11172-1/-2/-3 and 13818-2 – MPEG-1/2 system, video and audio headers\n  • Publicly documented structure of DVD-Video files (VOB, NAV packs)\n  • ISO/IEC 14496-12 – ISO Base Media File Format (MP4/MOV)\n  • RFC 8794 (EBML), RFC 9559 (Matroska / WebM)\n  • ITU-T H.264 – reading the SPS (profile, resolution)\n  • ATSC A/52 – reading the AC-3 header\n\n"
+            "Public specifications the joiner / extractor code was written from (no code was copied):\n  • ISO/IEC 13818-1 | ITU-T H.222.0 – MPEG-2 Transport Stream and Program Stream\n  • ISO/IEC 11172-1/-2/-3 and 13818-2 – MPEG-1/2 system, video and audio headers\n  • Publicly documented structure of DVD-Video files (VOB, NAV packs)\n  • ISO/IEC 14496-12 – ISO Base Media File Format (MP4/MOV)\n  • RFC 8794 (EBML), RFC 9559 (Matroska / WebM)\n  • ITU-T H.264 – reading the SPS (profile, resolution)\n  • ATSC A/52 – reading the AC-3 header\n  • ISO/IEC 13818-7 / 14496-3 – AAC ADTS header, ISO/IEC 11172-3 – MP3 / MP2 frame header\n  • RFC 3533 (Ogg), RFC 7845 (Ogg Opus), RFC 6716 (Opus)\n\n"
             "Not used and not included: eac3to, tsMuxeR. The earlier batch solution was built on eac3to and tsMuxeR; this program is self-contained and their licenses do not apply to it.\n\n"
             "The joiner and the extractor neither decode nor encode: they copy the packets of the stream unchanged. The modules that use the external FFmpeg (e.g. Smart Cut, the FFmpeg window) may encode and decode, but that is done by FFmpeg itself, as a separate program.\n\n"
             "Quoted text (not code): the program contains one short Bible quotation with its source indicated – in Hungarian a short quotation from the Károli Gáspár translation (public domain), in English the King James Version (public domain). These texts are not covered by the program's MIT License."
@@ -1197,7 +1199,7 @@ _LSTR = {
             "Copyright and license\nLossless Video Toolkit v%s is copyright of %s (Copyright (c) %s %s). It is released under the MIT License: you may use, copy, modify and distribute it freely. The full license text – together with the copyright notice – must be included with every copy or substantial portion of the software (see the License tab).\n\n"
             "Warranty and liability\nThe software is provided \"AS IS\", without warranty of any kind, express or implied. The author is not liable for any damage or data loss arising from its use. The program is designed not to modify your source files and to write the result to a new file – still, always keep a copy of important recordings.\n\n"
             "Content and rights\nUse the program only with recordings you have the right to use (your own recordings, or with the permission of the rights holder). The program does not circumvent copy protection and does not decrypt anything: encrypted / copy-protected content is rejected (e.g. a DRM-protected MP4 track, encrypted MPEG-PS). You are responsible for ensuring that your use complies with applicable law and with the terms of the rights holders.\n\n"
-            "Standards and patents\nThe joiner and the extractor are original code written from public technical specifications (see the Components tab); they neither encode nor decode video or audio, they only copy the packets of the stream and rewrite timestamps and counters. Smart Cut, the FFmpeg window, the image effects and the analyzer may start an external FFmpeg, which does encode and decode. Patent and licensing questions about video and audio codecs (e.g. H.264/AVC, MPEG-2, AC-3) typically concern the makers and users of products that implement those codecs. If you distribute the program as part of a commercial product, seek legal advice.\n\n"
+            "Standards and patents\nThe joiner and the extractor are original code written from public technical specifications (see the Components tab); they neither encode nor decode video or audio, they only copy the packets of the stream and rewrite timestamps and counters. Smart Cut, the FFmpeg window, the image effects and the analyzer may start an external FFmpeg, which does encode and decode. Patent and licensing questions about video and audio codecs (e.g. H.264/AVC, MPEG-2, AC-3, AAC, MP3, Opus) typically concern the makers and users of products that implement those codecs. If you distribute the program as part of a commercial product, seek legal advice.\n\n"
             "Quoted text\nThe program also contains one short Bible quotation, with its source indicated. The Hungarian text is a short quotation from the Károli Gáspár translation (public domain), the English one is from the King James Version (public domain). The quoted texts are not covered by the program's MIT License: their rights belong to the respective rights holders.\n\n"
             "Trademarks\nAVCHD is a trademark of Panasonic Corporation and Sony Corporation. Other product names, format names and trademarks mentioned in the program (e.g. Dolby, DVD, MPEG, Matroska, Python, FFmpeg, VapourSynth, StaxRip) belong to their respective owners. They are mentioned only to indicate compatibility; the program is not affiliated with, endorsed or approved by these owners.\n\n"
             "Privacy\nThe program itself initiates no network connections and collects or sends no data. It opens an external link in one place only: the \"Open license in browser\" button of the FFmpeg license window opens ffmpeg.org/legal.html in your default browser.\nIt writes these files locally, on your computer: ~/.mts_joiner.cfg (the selected language code); ~/.lvt_ffmpeg.json (settings of the FFmpeg module: the paths of ffmpeg / ffprobe / ffplay, saved presets); ~/.lossless_video_toolkit (icon cache); ~/efekt_vs_lanc (generated scripts and cache of the VapourSynth filter chain); in the program folder the efekt_naplo.txt diagnostic log (it may contain file names, folder names and paths; it is never sent anywhere) and the lvt_ffmpeg_licenc.txt marker file (it records that the FFmpeg notice was accepted); and temporary files with the lvt_ prefix in the operating system's temp folder, which it tries to delete after use.\n\n"
@@ -1217,7 +1219,72 @@ _SHORTSTR = {
 for _l in _STR:
     _STR[_l].update(_SHORTSTR[_l])
 
-_FMT_NAMES = {"ts": "AVCHD / MPEG-TS (.mts .m2ts .ts)", "mp4": "MP4 / MOV (.mp4 .m4v .mov)",
+_UST = {
+    "hu": {
+        "c_aud_codec": "a hang kodek eltér (%s ≠ %s)",
+        "c_aud_prof": "az AAC profil eltér",
+        "c_aud_gain": "az Opus kimeneti erősítés eltér",
+        "sc_n_mp3": "MP3: a keretek közötti bitkészlet (bit reservoir) miatt a varrat utáni első 1–2 keret "
+                    "hallhatóan sérülhet; a program a kereteket változatlanul másolja.",
+        "sc_n_codec": "A hangkereteket a program változatlanul másolja; a kodek belső állapota miatt a varratnál "
+                      "a legkisebb átmenet-eltérés előfordulhat (általában nem hallható).",
+        "l_aud_head": "Hang összefűzés: %d fájl, %s, %d Hz, %s csat.",
+        "l_aud_file": "%d. %s – másolás, %d keret, kezdete a kimenetben: %.3f s",
+        "l_aud_drop": "   nem átvett bájtok (címkék, hibás részek): %d",
+        "l_aud_xing": "   a VBR-fejléckeret (Xing / Info) nem kerül át: a hossz- és keresőadata az új fájlra nem lenne helyes",
+        "l_aud_opus": "   Opus: %d csomag, %.1f s",
+        "uc_struct": "Szerkezet",
+        "ud_struct": "a kimenet hibátlanul keretezhető, a keretek száma és mérete egyezik a forrásokéval, a formátum azonos az elsőével",
+        "uc_data": "Adatintegritás",
+        "ud_data": "minden hangkeret bájtra azonos a forrásokéval (CRC32), fájlonként",
+        "uc_frames": "Keret-ellenőrzés",
+        "ud_frames": "AC-3: a varratok körüli keretek CRC-je hibátlan (más kodeknél a keretfejlécek épsége a Szerkezet alatt)",
+        "uv_junk": "%d felismerhetetlen bájt a kimenetben",
+        "uv_count": "A keretek (csomagok) száma %d, a várt %d",
+        "uv_layout": "A keretek mérete eltér a forrásokétól",
+        "uv_fmt": "A kimenet hangformátuma eltér az első fájlétól",
+        "uv_size": "A fájlméret %d, a várt %d bájt",
+        "uv_crc": "%d. fájl: a hangkeretek adata eltér a forrástól (CRC-eltérés)",
+        "uv_crcframe": "AC-3 CRC-hiba a(z) %d. keretnél – sérült hangkeret (kattogás)",
+        "uv_opus": "%d. fájl: az Opus csomagok száma vagy adata eltér a forrástól",
+        "uv_opus_head": "Az Opus fejléc (OpusHead) eltér az első fájlétól",
+        "uv_parse": "A kimeneti fájl nem olvasható vissza: %s",
+    },
+    "en": {
+        "c_aud_codec": "the audio codec differs (%s ≠ %s)",
+        "c_aud_prof": "the AAC profile differs",
+        "c_aud_gain": "the Opus output gain differs",
+        "sc_n_mp3": "MP3: because of the bit reservoir between frames, the first 1–2 frames after the seam "
+                    "may be audibly damaged; the program copies the frames unchanged.",
+        "sc_n_codec": "The program copies the audio frames unchanged; because of the codec's internal state the "
+                      "smallest transition deviation may occur at the seam (usually inaudible).",
+        "l_aud_head": "Audio join: %d files, %s, %d Hz, %s ch",
+        "l_aud_file": "%d. %s – copying, %d frames, starts in the output at %.3f s",
+        "l_aud_drop": "   bytes not carried over (tags, damaged parts): %d",
+        "l_aud_xing": "   the VBR header frame (Xing / Info) is not carried over: its length and seek data would be wrong for the new file",
+        "l_aud_opus": "   Opus: %d packets, %.1f s",
+        "uc_struct": "Structure",
+        "ud_struct": "the output frames cleanly, frame count and sizes match the sources, the format equals the first file's",
+        "uc_data": "Data integrity",
+        "ud_data": "every audio frame is byte-identical to the sources (CRC32), per file",
+        "uc_frames": "Frame check",
+        "ud_frames": "AC-3: the CRC of the frames around the seams is intact (for other codecs frame-header integrity is under Structure)",
+        "uv_junk": "%d unrecognised bytes in the output",
+        "uv_count": "Frame (packet) count is %d, expected %d",
+        "uv_layout": "The frame sizes differ from the sources",
+        "uv_fmt": "The audio format of the output differs from the first file's",
+        "uv_size": "File size is %d, expected %d bytes",
+        "uv_crc": "File %d: the audio frame data differs from the source (CRC mismatch)",
+        "uv_crcframe": "AC-3 CRC error at frame %d – damaged audio frame (click)",
+        "uv_opus": "File %d: the number or data of the Opus packets differs from the source",
+        "uv_opus_head": "The Opus header (OpusHead) differs from the first file's",
+        "uv_parse": "The output file cannot be read back: %s",
+    },
+}
+for _l in _STR:
+    _STR[_l].update(_UST[_l])
+
+_FMT_NAMES = {"audio": "Audio (.aac .mp3 .mp2 .ac3 .eac3 .opus .ogg)", "ts": "AVCHD / MPEG-TS (.mts .m2ts .ts)", "mp4": "MP4 / MOV (.mp4 .m4v .mov)",
               "mkv": "Matroska / WebM (.mkv .webm .mka)", "ps": "MPEG-PS / DVD VOB (.mpg .mpeg .mod .vob)"}
 
 # A kategóriák: (cím, magyarázat) – a [E] / [W] a lenti üzenetek súlyára utal.
@@ -1238,6 +1305,7 @@ _VCAT = {
         "tables": ("Mintatáblák (MP4)", "Az MP4-konténer táblái (mintaszám, kulcskocka-lista, adatdarabok). Hiba [E] esetén a fájl nem lenne helyesen lejátszható."),
         "nav": ("NAV-csomagok (DVD VOB)", "A DVD navigációs csomagjainak óra- és szektorcím-mezői. Ha nem a tervezett módon változtak [E], a DVD-lejátszó eltévedhet a keresésnél."),
         "other": ("Kép és többi sáv", "Minden, aminek változatlannak kell maradnia: a nem cserélt sávok adata és időzítése bájtra azonos a forrással."),
+        "frames": ("Keret-ellenőrzés (AC-3 CRC)", "Az AC-3 keretek CRC-je a varratok körül. Hiba [E] sérült hangkeretet jelent (kattogás). Más kodeknél a keretfejlécek épségét a Szerkezet vizsgálja."),
         "pts": ("Időzítés", "A hangblokkok időbélyegeinek az eredeti + megadott késleltetés értékeknek kell lenniük, és növekvő sorrendben kell követniük egymást."),
     },
     "en": {
@@ -1256,6 +1324,7 @@ _VCAT = {
         "tables": ("Sample tables (MP4)", "The tables of the MP4 container (sample counts, key-frame list, data chunks). An error [E] means the file would not play back correctly."),
         "nav": ("NAV packs (DVD VOB)", "The clock and sector-address fields of the DVD navigation packs. If they did not change as planned [E], a DVD player may get lost when seeking."),
         "other": ("Picture and other tracks", "Everything that must stay unchanged: data and timing of the tracks that were not replaced are byte-identical to the source."),
+        "frames": ("Frame check (AC-3 CRC)", "The CRC of the AC-3 frames around the seams. An error [E] means a damaged audio frame (crackling). For other codecs frame-header integrity is checked under Structure."),
         "pts": ("Timing", "The timestamps of the audio blocks must equal the original + the given delay, and must be in increasing order."),
     },
 }
@@ -1263,13 +1332,14 @@ _VCAT = {
 _HELP = {
     "hu": [
         ("Első lépések", """## Mire való a program?
-Az Lossless Video Toolkit 1.0 több videófájlt fűz össze egyetlen folyamatos fájllá újrakódolás nélkül. Tipikus eset: a kamera a hosszú felvételt a fájlrendszer méretkorlátja miatt (pl. 4 GB) több fájlra darabolta, és ezeket szeretnéd visszaegyesíteni. A kép- és hangadat bájtra azonosan másolódik, ezért nincs minőségromlás; a program csak az időbélyegeket és a számlálókat számolja újra, hogy a lejátszó egyetlen folyamatos felvételnek lássa.
+Az Lossless Video Toolkit 1.1 több videófájlt fűz össze egyetlen folyamatos fájllá újrakódolás nélkül. Tipikus eset: a kamera a hosszú felvételt a fájlrendszer méretkorlátja miatt (pl. 4 GB) több fájlra darabolta, és ezeket szeretnéd visszaegyesíteni. A kép- és hangadat bájtra azonosan másolódik, ezért nincs minőségromlás; a program csak az időbélyegeket és a számlálókat számolja újra, hogy a lejátszó egyetlen folyamatos felvételnek lássa.
 
 ## Támogatott formátumok
 - AVCHD / MPEG-TS: .mts, .m2ts, .ts – a legteljesebb támogatás (H.264 videó, AC-3 hang)
 - MP4 / MOV: .mp4, .m4v, .mov
 - Matroska / WebM: .mkv, .webm, .mka
 - MPEG Program Stream és DVD VOB: .mpg, .mpeg, .mod, .vob
+- Hangfájlok: .m4a / .m4b (MP4-ben AAC, ALAC, MP3, Opus stb.), .aac (ADTS), .mp3, .mp2, .ac3, .eac3, .opus / .ogg (Opus), .mka. A hangkeretek bájtra azonosan másolódnak; a címkéket (ID3, APE) és az MP3 VBR-fejléckeretét (Xing / Info) a program nem viszi át, mert azok adatai az összefűzött fájlra nem lennének helyesek. MP3-nál a varrat után az első 1–2 keret a bitkészlet miatt hallhatóan sérülhet.
 Egy összefűzésben csak azonos típusú és azonos beállítású fájlok szerepelhetnek: .mts nem fűzhető .mp4-hez, és a más felbontású vagy más hangformátumú fájlt a program elutasítja (nem alakít át semmit).
 
 ## Összefűzés lépésről lépésre
@@ -1363,7 +1433,8 @@ Az alábbi listák a program tényleges üzeneteiből készülnek. A „N” sz�
 @@VERIFY:ts@@
 @@VERIFY:ps@@
 @@VERIFY:mp4@@
-@@VERIFY:mkv@@"""),
+@@VERIFY:mkv@@
+@@VERIFY:audio@@"""),
 
         ("Hang / stream eszközök", """## Mire jó a második fül?
 A „Hang / stream eszközök” fülön folyamokat (képet, hangot) nyerhetsz ki egy fájlból, a hangot kicserélheted, vagy csak a hang időzítését tolhatod el. A kép és a többi sáv bájtra azonos marad. Támogatott: TS / M2TS, MP4 / MOV és MKV.
@@ -1437,13 +1508,14 @@ Az összefűző a kiválasztott nyelv kódját a ~/.mts_joiner.cfg fájlba menti
     ],
     "en": [
         ("Getting started", """## What is this program for?
-Lossless Video Toolkit 1.0 joins several video files into one continuous file without re-encoding. Typical case: your camera split a long recording into several files because of the file-system size limit (e.g. 4 GB), and you want to put them back together. Picture and audio data are copied byte for byte, so there is no quality loss; the program only recalculates timestamps and counters so that a player sees one continuous recording.
+Lossless Video Toolkit 1.1 joins several video files into one continuous file without re-encoding. Typical case: your camera split a long recording into several files because of the file-system size limit (e.g. 4 GB), and you want to put them back together. Picture and audio data are copied byte for byte, so there is no quality loss; the program only recalculates timestamps and counters so that a player sees one continuous recording.
 
 ## Supported formats
 - AVCHD / MPEG-TS: .mts, .m2ts, .ts – the most complete support (H.264 video, AC-3 audio)
 - MP4 / MOV: .mp4, .m4v, .mov
 - Matroska / WebM: .mkv, .webm, .mka
 - MPEG Program Stream and DVD VOB: .mpg, .mpeg, .mod, .vob
+- Audio files: .m4a / .m4b (AAC, ALAC, MP3, Opus etc. in MP4), .aac (ADTS), .mp3, .mp2, .ac3, .eac3, .opus / .ogg (Opus), .mka. The audio frames are copied byte for byte; tags (ID3, APE) and the MP3 VBR header frame (Xing / Info) are not carried over, because their data would be wrong for the joined file. For MP3, the first 1–2 frames after a seam may be audibly damaged because of the bit reservoir.
 A single join may only contain files of the same type and the same settings: .mts cannot be joined to .mp4, and files with a different resolution or audio format are rejected (nothing is converted).
 
 ## Joining step by step
@@ -1537,7 +1609,8 @@ The lists below are generated from the program's actual messages. "N" stands for
 @@VERIFY:ts@@
 @@VERIFY:ps@@
 @@VERIFY:mp4@@
-@@VERIFY:mkv@@"""),
+@@VERIFY:mkv@@
+@@VERIFY:audio@@"""),
 
         ("Audio / stream tools", """## What is the second tab for?
 On the "Audio / stream tools" tab you can extract streams (picture, audio) from a file, replace the audio, or only shift the audio timing. The picture and all other tracks stay byte-identical. Supported: TS / M2TS, MP4 / MOV and MKV.
@@ -1614,7 +1687,11 @@ The joiner saves the selected language code in ~/.mts_joiner.cfg. The other modu
 # A két tábla az ellenőrző / összehasonlító függvényekből származik (súlyozás: E = hiba, W = figyelmeztetés;
 # R = piros, Y = sárga). A tesztelés során a program forrásából újra kinyerve egyeznie kell velük.
 
-_VERIFY_MSGS = {'mkv': (('struct',
+_VERIFY_MSGS = {'audio': (('struct',
+            (('E', 'uv_parse'), ('E', 'uv_junk'), ('E', 'uv_size'), ('E', 'uv_count'), ('E', 'uv_layout'),
+             ('E', 'uv_fmt'), ('E', 'uv_opus_head'))),
+           ('data', (('E', 'uv_crc'), ('E', 'uv_opus'))), ('frames', (('E', 'uv_crcframe'),))),
+ 'mkv': (('struct',
           (('E', 'mv_boxes'), ('E', 'kv_ebml'), ('E', 'kv_segsize'), ('E', 'kv_cnt1'), ('E', 'kv_clusters'),
            ('E', 'kv_tracks'), ('E', 'kv_ctc'))),
          ('index', (('W', 'kv_noseek'), ('E', 'kv_seek'), ('E', 'kv_cue'), ('W', 'kv_nocues'))),
@@ -1660,7 +1737,9 @@ _VERIFY_MSGS = {'mkv': (('struct',
         ('vseam', (('W', 'v_idr_none'),)), ('pset', (('E', 'v_pset_miss'),)),
         ('sync', (('E', 'v_s_noaudio'), ('E', 'v_s_grid'), ('W', 'v_s_many'))))}
 
-_COMPARE_MSGS = {'mkv': (('R', 'c_mp4_tracks'), ('R', 'c_mkv_doctype'), ('R', 'c_mkv_scale'), ('R', 'c_mkv_track'),
+_COMPARE_MSGS = {'audio': (('R', 'c_aud_codec'), ('R', 'c_afmt'), ('R', 'c_aud_prof'), ('Y', 'c_abr'),
+           ('Y', 'c_aud_gain')),
+ 'mkv': (('R', 'c_mp4_tracks'), ('R', 'c_mkv_doctype'), ('R', 'c_mkv_scale'), ('R', 'c_mkv_track'),
          ('R', 'c_mp4_codec'), ('R', 'c_mkv_priv'), ('R', 'c_res'), ('R', 'c_fps'), ('R', 'c_afmt'),
          ('Y', 'c_mkv_cfg'), ('Y', 'c_mkv_drop')),
  'mp4': (('R', 'c_mp4_tracks'), ('R', 'c_mp4_kind'), ('R', 'c_mp4_ts'), ('R', 'c_mp4_codec'), ('R', 'c_res'),
@@ -1671,7 +1750,7 @@ _COMPARE_MSGS = {'mkv': (('R', 'c_mp4_tracks'), ('R', 'c_mkv_doctype'), ('R', 'c
  'ts': (('R', 'c_pktsize'), ('R', 'c_pid'), ('R', 'c_vcodec'), ('R', 'c_fps'), ('R', 'c_res'), ('R', 'c_scan'),
         ('Y', 'c_prof'), ('Y', 'c_vunk'), ('R', 'c_acodec'), ('R', 'c_afmt'), ('Y', 'c_abr'), ('Y', 'c_sps'))}
 
-_CHECK_PFX = {"ts": ("vc", "vd"), "ps": ("pc", "pd"), "mp4": ("mc", "md"), "mkv": ("kc", "kd"), "tools": ("ac", "ad")}
+_CHECK_PFX = {"audio": ("uc", "ud"), "ts": ("vc", "vd"), "ps": ("pc", "pd"), "mp4": ("mc", "md"), "mkv": ("kc", "kd"), "tools": ("ac", "ad")}
 
 
 def _msg_sample(s):
@@ -1704,7 +1783,7 @@ def _verify_block(fmt):
 
 def _compare_block():
     lang, out = _STR[LANG], []
-    for fmt in ("ts", "mp4", "mkv", "ps"):
+    for fmt in ("ts", "mp4", "mkv", "ps", "audio"):
         out.append("### " + _FMT_NAMES[fmt])
         out += ["[%s] %s" % (lvl, _msg_sample(lang[key])) for lvl, key in _COMPARE_MSGS[fmt]]
     return out
@@ -2230,6 +2309,8 @@ def _analyze(inf):
 def FileInfo(path):
     """A fájl kiterjesztése alapján a megfelelő elemző objektumot adja."""
     ext = os.path.splitext(path)[1].lower()
+    if ext in AUD_EXTS:
+        return AudInfo(path)
     if ext in MP4_EXTS:
         return Mp4Info(path)
     if ext in MKV_EXTS:
@@ -2266,6 +2347,8 @@ def compare(ref, inf, prev=None):
         return "ok", tr("c_ref")
     if inf.kind != ref.kind:
         return "bad", tr("c_kind", ref.kind.upper(), inf.kind.upper())
+    if inf.kind == "audio":
+        return aud_compare(ref, inf)
     if inf.kind == "mp4":
         return mp4_compare(ref, inf)
     if inf.kind == "mkv":
@@ -2545,6 +2628,8 @@ def seam_assess(prev, cur):
         return None
     if prev.kind != cur.kind:
         return None
+    if cur.kind == "audio":
+        return _seam_aud(prev, cur)
     if cur.kind == "ts":
         return _seam_ts(prev, cur)
     if cur.kind in ("mpg", "vob"):
@@ -2760,6 +2845,8 @@ def join_files(infos, out_path, progress=None, log=None, cancel=None, verify=Tru
         if i.kind != ref.kind:
             raise MsgError("c_kind", ref.kind.upper(), i.kind.upper())
     seam_log(infos, log)
+    if ref.kind == "audio":
+        return aud_join(infos, out_path, progress, log, cancel, verify)
     if ref.kind == "mp4":
         return mp4_join(infos, out_path, progress, log, cancel, verify)
     if ref.kind == "mkv":
@@ -4959,7 +5046,7 @@ def ps_verify(path, infos, plan, progress=None, log=None, cancel=None):
 # szerkesztőlista (elst) épül újra. Csak a Python standard könyvtárát használja
 # (ISO/IEC 14496-12 – ISO Base Media File Format – nyilvános specifikáció alapján).
 
-MP4_EXTS = (".mp4", ".m4v", ".mov")
+MP4_EXTS = (".mp4", ".m4v", ".mov", ".m4a", ".m4b")
 MP4_CO64_AT = 0xFFFFFFFF      # ennél nagyobb eltolásokhoz co64 kell
 MP4_MDAT64_AT = 0xFFFFFFFF    # ennél nagyobb mdat-hoz 64 bites fejléc kell
 MP4_CORE = {b"stsd", b"stts", b"ctts", b"stss", b"stsc", b"stsz", b"stz2", b"stco", b"co64"}
@@ -6040,7 +6127,7 @@ def mp4_verify(path, infos, plan, progress=None, log=None, cancel=None):
 # és a SeekHead újra készül. Csak a Python standard könyvtárát használja
 # (RFC 8794 – EBML, RFC 9559 – Matroska – nyilvános specifikáció alapján).
 
-MKV_EXTS = (".mkv", ".mka", ".mk3d", ".webm")
+MKV_EXTS = (".mkv", ".mka", ".mk3d", ".webm", ".weba")
 ID_EBML = 0x1A45DFA3
 ID_SEGMENT = 0x18538067
 ID_SEEKHEAD = 0x114D9B74
@@ -6973,7 +7060,11 @@ def default_out_ext(first_path):
         return ".vob"
     if ext in MPG_EXTS:
         return ".mpg" if ext in (".mpg", ".mpeg") else ext
-    return ext if ext in (".mov",) else (".mp4" if ext in MP4_EXTS else ".m2ts")
+    if ext in AUD_EXTS:
+        return aud_out_ext(ext)
+    if ext in (".m4a", ".m4b", ".mov"):
+        return ext
+    return ".mp4" if ext in MP4_EXTS else ".m2ts"
 
 
 def natural_key(s):
@@ -9051,6 +9142,352 @@ def au_cli(argv):
     return 0
 
 
+# ============================================================ HANGFÁJLOK ====
+# Veszteségmentes hangfájl-összefűzés: AAC (ADTS), MP3, MP2, AC-3, E-AC-3 és Opus (Ogg).
+# A hangkeretek / csomagok bájtra azonosan másolódnak, nincs dekódolás és újrakódolás.
+# A címkék (ID3, APE) és a VBR-fejléckeret (Xing / Info / VBRI) nem kerülnek át, mert a
+# bennük tárolt hossz- és keresőadat az összefűzött fájlra nem lenne helyes.
+# M4A / M4B fájlok az MP4 ágon fűződnek össze (lásd MP4_EXTS), MKA a Matroska ágon.
+# Csak a Python standard könyvtárát használja; a keretfejléc-elemzés a nyilvános
+# szabványokra épül (ISO/IEC 11172-3, 13818-7 / 14496-3 ADTS, ATSC A/52, RFC 6716, RFC 7845).
+
+AUD_EXTS = (".aac", ".adts", ".mp3", ".mp2", ".mpa", ".ac3", ".eac3", ".ec3", ".opus", ".ogg", ".oga")
+AUD_CHECKS = ("struct", "data", "frames")
+_AUD_OUT_EXT = {".adts": ".aac", ".ec3": ".eac3", ".ogg": ".opus", ".oga": ".opus"}
+
+
+def aud_out_ext(ext):
+    """A hangösszefűzés alapértelmezett kimeneti kiterjesztése."""
+    ext = ext.lower()
+    return _AUD_OUT_EXT.get(ext, ext)
+
+
+def _mp3_info_frame(fb):
+    """Xing / Info / VBRI fejlécet tartalmazó (hangot nem hordozó) MP3-keret?"""
+    if len(fb) < 44:
+        return False
+    if fb[36:40] == b"VBRI":
+        return True
+    return any(fb[o:o + 4] in (b"Xing", b"Info") for o in (13, 15, 21, 23, 36, 38))
+
+
+class AudInfo:
+    kind = "audio"
+
+    def __init__(self, path):
+        self.path = path
+        self.name = os.path.basename(path)
+        self.pending = True
+        self.error = None
+        self.size = 0
+        self.duration = 0.0
+        self.codec = None
+        self.fs = 0
+        self.ch = "?"
+        self.spf = 0
+        self.kbps = 0.0
+        self.fr = None            # AudFrames (nem Opus): a keretek helye a fájlban
+        self.head = b""           # Opus: OpusHead
+        self.pre = 0
+        self.npk = 0
+        self.tot = 0
+        self.nframes = 0
+        self.data_bytes = 0
+        self.junk = 0
+        self.xing = False
+        self.prof = None
+
+    def analyze(self):
+        _aud_analyze(self)
+
+    def vdesc(self):
+        return ""
+
+    def adesc(self):
+        if not self.codec:
+            return "?"
+        return "%s %sch %d Hz %dk" % (_ENC_NAME.get(self.codec, self.codec.upper()), self.ch,
+                                      self.fs, int(round(self.kbps)))
+
+
+def _aud_analyze(inf):
+    inf.size = os.path.getsize(inf.path)
+    if inf.size < 64:
+        raise MsgError("err_small")
+    fr = aud_scan(inf.path)
+    inf.codec, inf.fs, inf.ch, inf.spf, inf.junk = fr.codec, fr.fs, fr.ch, fr.spf, fr.junk
+    if fr.codec == "opus":
+        inf.head, inf.pre = fr.head, fr.pre
+        inf.npk = inf.nframes = len(fr.pk)
+        inf.tot = fr.tot
+        inf.data_bytes = sum(fr.sizes)
+        inf.duration = max(0, fr.tot - fr.pre) / 48000.0
+        inf.fr = None
+    else:
+        if fr.codec == "mp3" and fr.n > 1:
+            with open(inf.path, "rb") as f:
+                f.seek(fr.offs[0])
+                if _mp3_info_frame(f.read(fr.sizes[0])):
+                    del fr.offs[0]
+                    del fr.sizes[0]
+                    inf.xing = True
+        if fr.codec == "aac":
+            with open(inf.path, "rb") as f:
+                f.seek(fr.offs[0])
+                hb = f.read(7)
+            inf.prof = (hb[2] >> 6) & 3
+        inf.fr = fr
+        inf.nframes = fr.n
+        inf.data_bytes = sum(fr.sizes)
+        inf.duration = fr.n * fr.spf / float(fr.fs)
+    inf.kbps = inf.data_bytes * 8.0 / 1000.0 / (inf.duration or 1.0)
+    if inf.duration <= 0:
+        raise MsgError("err_small")
+
+
+def aud_compare(ref, inf):
+    bad, warn = [], []
+    if inf.codec != ref.codec:
+        return "bad", tr("c_aud_codec", ref.codec.upper(), inf.codec.upper())
+    if inf.fs != ref.fs or _chan_n(inf.ch) != _chan_n(ref.ch):
+        bad.append(tr("c_afmt"))
+    if inf.codec == "aac" and inf.prof != ref.prof:
+        bad.append(tr("c_aud_prof"))
+    if inf.codec == "opus":
+        if inf.head[18:] != ref.head[18:]:
+            if tr("c_afmt") not in bad:
+                bad.append(tr("c_afmt"))
+        elif inf.head[16:18] != ref.head[16:18]:
+            warn.append(tr("c_aud_gain"))
+    elif inf.codec in ("ac3", "eac3", "mp2"):
+        if abs(inf.kbps - ref.kbps) > 0.02 * ref.kbps:
+            warn.append(tr("c_abr"))
+    if bad:
+        return "bad", "; ".join(bad)
+    if warn:
+        return "warn", "; ".join(warn)
+    return "ok", tr("c_ok")
+
+
+def _seam_aud(a, b):
+    """Hangfájlok varrata: időbélyeg nincs, a folytatás csak a méretből sejthető."""
+    hit = split_limit_hit(a.size)
+    r = _seam_new("size" if hit else "no", hit, [("size", hit)] if hit else [], False)
+    if b.codec == "mp3":
+        r["notes"].append(("sc_n_mp3",))
+    elif b.codec in ("aac", "opus"):
+        r["notes"].append(("sc_n_codec",))
+    return r
+
+
+def _aud_runs(fr):
+    """A keretek összefüggő (egymás után következő) bájttartományai: (kezdet, hossz)."""
+    ro = rl = 0
+    for o, s in zip(fr.offs, fr.sizes):
+        if rl and ro + rl == o:
+            rl += s
+        else:
+            if rl:
+                yield ro, rl
+            ro, rl = o, s
+    if rl:
+        yield ro, rl
+
+
+def aud_join(infos, out_path, progress=None, log=None, cancel=None, verify=True):
+    log = log or (lambda s: None)
+    progress = progress or (lambda f: None)
+    ref = infos[0]
+    nf = len(infos)
+    opus = ref.codec == "opus"
+    total = sum(i.data_bytes for i in infos)
+    _free_check(out_path, total)
+    log(tr("l_aud_head", nf, _ENC_NAME.get(ref.codec, ref.codec.upper()), ref.fs, ref.ch))
+    share = 0.5 if verify else 1.0
+    done = [0]
+    plan = {"opus": opus, "starts": [], "bytes": [], "crc": [], "npk": [], "frames": []}
+    tmp = out_path + ".part"
+    try:
+        with open(tmp, "wb") as fo:
+            w = OggOpusWriter(fo, ref.head) if opus else None
+            cum = 0.0
+            for k, inf in enumerate(infos):
+                log(tr("l_aud_file", k + 1, inf.name, inf.nframes, cum))
+                plan["starts"].append(fo.tell())
+                crc = nb = 0
+                if opus:
+                    with open(inf.path, "rb") as fi:
+                        head, pk = ogg_read(fi.read())
+                    for i, p in enumerate(pk):
+                        if cancel is not None and cancel.is_set():
+                            raise _Cancelled()
+                        w.add(p, opus_dur(p))
+                        crc = zlib.crc32(p, crc)
+                        if i % 512 == 0:
+                            progress(share * (done[0] + inf.data_bytes * i / float(max(1, len(pk))))
+                                     / float(max(1, total)))
+                    plan["npk"].append(len(pk))
+                    done[0] += inf.data_bytes
+                    log(tr("l_aud_opus", len(pk), inf.duration))
+                else:
+                    if inf.xing:
+                        log(tr("l_aud_xing"))
+                    with open(inf.path, "rb") as fi:
+                        for off, ln in _aud_runs(inf.fr):
+                            while ln > 0:
+                                if cancel is not None and cancel.is_set():
+                                    raise _Cancelled()
+                                n = min(ln, 4 * 1024 * 1024)
+                                fi.seek(off)
+                                d = fi.read(n)
+                                if len(d) != n:
+                                    raise MsgError("m_trunc")
+                                fo.write(d)
+                                crc = zlib.crc32(d, crc)
+                                nb += n
+                                off += n
+                                ln -= n
+                                done[0] += n
+                                progress(share * done[0] / float(max(1, total)))
+                    if inf.size - nb > 0:
+                        log(tr("l_aud_drop", inf.size - nb))
+                plan["bytes"].append(nb)
+                plan["crc"].append(crc)
+                plan["frames"].append(inf.nframes)
+                cum += inf.duration
+            if opus:
+                w.close()
+        plan["size"] = os.path.getsize(tmp)
+        if verify:
+            vres = aud_verify(tmp, infos, plan, lambda f: progress(share + (1.0 - share) * f), log, cancel)
+            if vres is None:
+                raise _Cancelled()
+            if vres[0]:
+                root, ext = os.path.splitext(out_path)
+                bad = root + "_HIBAS" + ext
+                os.replace(tmp, bad)
+                raise MsgError("v_failed", vres[0], bad)
+        else:
+            log(tr("l_verify_off"))
+        os.replace(tmp, out_path)
+    except _Cancelled:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        return False
+    except BaseException:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+        raise
+    log(tr("l_done", out_path))
+    return True
+
+
+def aud_verify(path, infos, plan, progress=None, log=None, cancel=None):
+    """A kész hangfájl ellenőrzése a kimenetről visszaolvasva. (hibák, figyelmeztetések) / None."""
+    log = log or (lambda s: None)
+    progress = progress or (lambda f: None)
+    ref = infos[0]
+    nf = len(infos)
+    res = {k: [0, 0] for k in AUD_CHECKS}
+    shown = Counter()
+
+    def issue(chk, sev, key, *a):
+        res[chk][0 if sev == "E" else 1] += 1
+        shown[chk] += 1
+        if shown[chk] <= MAX_SHOWN:
+            log("   %s %s" % ("✗" if sev == "E" else "!", tr(key, *a)))
+        elif shown[chk] == MAX_SHOWN + 1:
+            log(tr("v_more", tr("uc_" + chk)))
+
+    def finish():
+        return _verify_summary(res, log, AUD_CHECKS, "uc_")
+
+    log(tr("v_head", nf - 1))
+    log(tr("v_what"))
+    for key in AUD_CHECKS:
+        log("   • %s: %s" % (tr("uc_" + key), tr("ud_" + key)))
+
+    if plan["opus"]:
+        try:
+            with open(path, "rb") as f:
+                head, pk = ogg_read(f.read())
+        except MsgError as e:
+            issue("struct", "E", "uv_parse", str(e))
+            return finish()
+        if head != ref.head:
+            issue("struct", "E", "uv_opus_head")
+        want = sum(plan["npk"])
+        if len(pk) != want:
+            issue("struct", "E", "uv_count", len(pk), want)
+        pos = 0
+        for k in range(nf):
+            seg = pk[pos:pos + plan["npk"][k]]
+            pos += plan["npk"][k]
+            crc = 0
+            for p in seg:
+                crc = zlib.crc32(p, crc)
+            if len(seg) != plan["npk"][k] or crc != plan["crc"][k]:
+                issue("data", "E", "uv_opus", k + 1)
+            progress((k + 1) / float(nf))
+        return finish()
+
+    if os.path.getsize(path) != plan["size"] or plan["size"] != sum(plan["bytes"]):
+        issue("struct", "E", "uv_size", os.path.getsize(path), sum(plan["bytes"]))
+    try:
+        out = aud_scan(path, cancel=cancel, codec=ref.codec)
+    except MsgError as e:
+        if e.key == "cancelled":
+            return None
+        issue("struct", "E", "uv_parse", str(e))
+        return finish()
+    if out.junk:
+        issue("struct", "E", "uv_junk", out.junk)
+    want = sum(plan["frames"])
+    if out.n != want:
+        issue("struct", "E", "uv_count", out.n, want)
+    else:
+        exp = array("I")
+        for inf in infos:
+            exp.extend(inf.fr.sizes)
+        if out.sizes != exp:
+            issue("struct", "E", "uv_layout")
+    if out.fs != ref.fs or _chan_n(out.ch) != _chan_n(ref.ch):
+        issue("struct", "E", "uv_fmt")
+    progress(0.3)
+    with open(path, "rb") as f:
+        for k in range(nf):
+            f.seek(plan["starts"][k])
+            left, crc = plan["bytes"][k], 0
+            while left > 0:
+                if cancel is not None and cancel.is_set():
+                    return None
+                d = f.read(min(left, 4 * 1024 * 1024))
+                if not d:
+                    break
+                crc = zlib.crc32(d, crc)
+                left -= len(d)
+            if left or crc != plan["crc"][k]:
+                issue("data", "E", "uv_crc", k + 1)
+            progress(0.3 + 0.6 * (k + 1) / float(nf))
+        if ref.codec == "ac3" and out.n:
+            ok = all(ac3_crc_ok(aud_read(f, out, i)) for i in range(min(out.n, 30)))
+            log(tr("v_crc_info", tr("v_crc_on" if ok else "v_crc_off")))
+            if ok:
+                idx, c = set(range(max(0, out.n - 3), out.n)), 0
+                for fcount in plan["frames"]:
+                    idx.update(i for i in range(c - 3, c + 3) if 0 <= i < out.n)
+                    c += fcount
+                for i in sorted(idx):
+                    if not ac3_crc_ok(aud_read(f, out, i)):
+                        issue("frames", "E", "uv_crcframe", i + 1)
+    progress(1.0)
+    return finish()
+
+
 # ------------------------------------------------------------ alkalmazás-ikon --
 # Az ikont a program maga rajzolja, kizárólag matematikai alakzatokból (nincs külső
 # képfájl, nincs másolt grafika). Motívum: egy ferdén álló filmszalag, amelyet egy
@@ -9949,14 +10386,15 @@ def run_gui():
         def add_files(self):
             paths = filedialog.askopenfilenames(
                 title=tr("dlg_files"),
-                filetypes=[(tr("ft_video"), "*.mts *.m2ts *.ts *.mp4 *.m4v *.mov *.mkv *.mka *.webm *.mpg *.mpeg *.mod *.vob"),
+                filetypes=[(tr("ft_video"), "*.mts *.m2ts *.ts *.mp4 *.m4v *.mov *.m4a *.m4b *.mkv *.mka *.webm *.weba *.mpg *.mpeg *.mod *.vob "
+                                           "*.aac *.adts *.mp3 *.mp2 *.mpa *.ac3 *.eac3 *.ec3 *.opus *.ogg *.oga"),
                            (tr("ft_avchd"), "*.mts *.m2ts *.ts"), (tr("ft_all"), "*.*")])
             self._add(sorted(paths, key=lambda p: natural_key(os.path.basename(p))))
 
         def add_folder(self):
             d = filedialog.askdirectory(title=tr("dlg_folder"))
             if d:
-                names = [n for n in os.listdir(d) if n.lower().endswith((".mts", ".m2ts", ".mp4", ".m4v", ".mov") + MKV_EXTS + MPG_EXTS + VOB_EXTS)]
+                names = [n for n in os.listdir(d) if n.lower().endswith((".mts", ".m2ts", ".mp4", ".m4v", ".mov", ".m4a", ".m4b") + MKV_EXTS + MPG_EXTS + VOB_EXTS + AUD_EXTS)]
                 self._add([os.path.join(d, n) for n in sorted(names, key=natural_key)])
 
         def _add(self, paths):
@@ -9973,7 +10411,9 @@ def run_gui():
             cur = os.path.basename(self.out_var.get())
             if not cur or cur in ("osszefuzott.m2ts", "osszefuzott.mp4", "osszefuzott.mov",
                            "osszefuzott.mkv", "osszefuzott.webm", "osszefuzott.mpg",
-                           "osszefuzott.vob", "osszefuzott.mpeg"):
+                           "osszefuzott.vob", "osszefuzott.mpeg", "osszefuzott.m4a", "osszefuzott.m4b",
+                           "osszefuzott.aac", "osszefuzott.mp3", "osszefuzott.mp2", "osszefuzott.mpa",
+                           "osszefuzott.ac3", "osszefuzott.eac3", "osszefuzott.opus"):
                 first = self.infos[0].path
                 self.out_var.set(os.path.join(os.path.dirname(first), "osszefuzott" + default_out_ext(first)))
             self.refresh()
@@ -10038,13 +10478,16 @@ def run_gui():
         def browse_out(self):
             kind = self.infos[0].kind if self.infos else "ts"
             if kind == "mp4":
-                fts = [("MP4", "*.mp4"), ("MOV", "*.mov")]
+                fts = [("MP4", "*.mp4"), ("M4A", "*.m4a"), ("M4B", "*.m4b"), ("MOV", "*.mov")]
             elif kind == "mkv":
                 fts = [("MKV", "*.mkv"), ("WebM", "*.webm"), ("MKA", "*.mka")]
             elif kind == "vob":
                 fts = [("VOB", "*.vob")]
             elif kind == "mpg":
                 fts = [("MPEG", "*.mpg *.mpeg"), ("MOD", "*.mod")]
+            elif kind == "audio":
+                e = default_out_ext(self.infos[0].path)
+                fts = [(e[1:].upper(), "*" + e)]
             else:
                 fts = [("M2TS", "*.m2ts"), ("TS", "*.ts")]
             p = filedialog.asksaveasfilename(
