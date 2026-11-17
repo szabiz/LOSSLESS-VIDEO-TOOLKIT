@@ -32,7 +32,7 @@ import threading
 import argparse
 from collections import Counter
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 MOD33 = 1 << 33
 HALF33 = 1 << 32
