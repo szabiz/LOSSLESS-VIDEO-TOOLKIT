@@ -34,7 +34,7 @@ A video toolkit for Windows that works on your recordings **without quality loss
 
 | Area | What it does | Needs FFmpeg? |
 |---|---|:---:|
-| **Joiner** | Joins files losslessly, no re-encoding | No |
+| **Joiner** | Joins video and audio files losslessly, no re-encoding | No |
 | **Extractor** | Extracts audio or video streams, replaces audio, verifies the result | No |
 | **Cutter** | Lossless cutting on keyframes | No |
 | **Smart Cut** | Frame-accurate cuts: re-encodes only the cut edges, copies everything between | Yes |
@@ -44,7 +44,7 @@ A video toolkit for Windows that works on your recordings **without quality loss
 | **Analyzer** | Checks the structure and timing of a video file | Partly |
 | **Command line** | Joiner without the GUI (`LVT_cli.exe`) | No |
 
-Supported containers for joining: AVCHD (`.MTS` / `.M2TS`), MP4 / MOV, MKV / WebM, MPEG-PS and DVD VOB.
+Supported formats for joining: AVCHD (`.MTS` / `.M2TS`), MP4 / MOV, MKV / WebM, MPEG-PS and DVD VOB, and audio files (`.m4a` / `.m4b`, `.aac`, `.mp3`, `.mp2`, `.ac3`, `.eac3`, `.opus` / `.ogg`, `.mka`).
 
 ## Download and quick start
 
@@ -59,6 +59,7 @@ The joiner, extractor and cutter work right away. FFmpeg-based features (Smart C
 ## Joiner and extractor
 
 - Lossless joining of AVCHD (`.MTS` / `.M2TS`), MP4 / MOV, MKV / WebM, MPEG-PS and DVD VOB files. Nothing is re-encoded, so there is no quality loss and the job is as fast as the disk allows.
+- Lossless joining of **audio files**: `.m4a` / `.m4b` (AAC, ALAC and others in MP4), raw `.aac` (ADTS), `.mp3`, `.mp2`, `.ac3`, `.eac3`, `.opus` / `.ogg` (Ogg Opus) and `.mka`. The audio frames are copied byte for byte. All files must have the same codec and parameters (sample rate, channels, profile); otherwise the file is rejected. Tags (ID3, APE) and the MP3 VBR header frame (Xing / Info) are not carried over, because their length and seek data would be wrong for the joined file. For MP3, the first 1–2 frames after a seam may be audibly damaged because of the bit reservoir. FLAC and WAV are not supported.
 - Extract audio and video streams into separate files.
 - Replace the audio of a video.
 - Verify the result after joining.
@@ -67,6 +68,7 @@ Command line (graphical interface: `python mts_joiner.py`):
 
 ```
 python mts_joiner.py -o out.m2ts a.mts b.mts
+python mts_joiner.py -o out.mp3 a.mp3 b.mp3
 ```
 
 In the exe build the command-line version is `cli\LVT_cli.exe`.
@@ -221,20 +223,3 @@ Distribute the whole `dist\LVT` folder (the `_internal` folder is required). The
 **License:** MIT (see [`LICENSE`](LICENSE)). Third-party notices: [`THIRD_PARTY_NOTICES.txt`](THIRD_PARTY_NOTICES.txt).
 
 The program is provided "AS IS", without warranty of any kind. Use it only with recordings you have the right to use. Always keep a backup of important recordings.
-
->
-![1](LVT_1.jpg)
-
-![2](LVT_2.jpg)
-
-![3](LVT_3.jpg)
-
-![4](LVT_4.jpg)
-
-![5](LVT_5.jpg)
-
-![6](LVT_6.jpg)
-
-![7](LVT_7.jpg)
-
-
